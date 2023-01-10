@@ -1,0 +1,9 @@
+.sample {
+    color: red;
+    width: 50%;
+}
+
+body {
+    background-image: url("./Desktop_Dashboard.png");
+    background-size: 100vw;
+}
