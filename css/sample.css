@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.sample {
+    color: red;
+    width: 50%;
+}
+
+body {
+    background-image: url("../img/Desktop_Dashboard.png");
+    background-size: 100vw;
+}
