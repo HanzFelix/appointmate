@@ -7,13 +7,14 @@
     <title>Document</title>
     <!--script src="https://cdn.tailwindcss.com"></script-->
     <link rel="stylesheet" href="../dist/output.css">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
 </head>
 <body>
-    <main class="container grid grid-cols-1 sm:grid-cols-5 mx-auto bg-slate-600 justify-stretch px-10 gap-10 overflow-hidden">
-        <main class="sm:col-start-1 sm:col-end-4 flex flex-col bg-slate-700 grow-0">
+    <main class="container grid grid-cols-1 sm:grid-cols-5 mx-auto bg-sky-100 justify-stretch px-10 gap-10 overflow-hidden mt-10">
+        <main class="sm:col-start-1 sm:col-end-4 flex flex-col bg-blue-100 grow-0 gap-2">
             <h1 class="text-2xl">At a Glance</h1>
-            <div class="flex flex-col gap-4 mt-4">
-                <article class="flex flex-col md:flex-row flex-col-reverse shadow-sm bg-slate-200 rounded-xl justify-items-stretch">
+            <div class="flex flex-col gap-4">
+                <article class="flex flex-col md:flex-row flex-col-reverse shadow-sm bg-white rounded-xl justify-items-stretch shadow-md">
                     <div class="flex flex-col justify-center py-2 px-4 box-border overflow-hidden">
                         <h2 class="text-xl whitespace-nowrap text-ellipsis truncate">Card Title That Exceeds a few lines aaaaa a aaaaa</h2>
                         <p class="text-xs whitespace-nowrap text-ellipsis overflow-hidden">@username</p>
@@ -22,7 +23,7 @@
                     </div>
                     <img src="../img/sample.jpg" alt="" class="md:w-36 shrink-0 h-28 object-cover rounded-t-xl md:rounded-tl-none md:rounded-r-xl">
                 </article>
-                <article class="flex flex-col md:flex-row flex-col-reverse shadow-sm bg-slate-200 rounded-xl justify-items-stretch">
+                <article class="flex flex-col md:flex-row flex-col-reverse shadow-sm bg-white rounded-xl justify-items-stretch shadow-md">
                     <div class="flex flex-col justify-center py-2 px-4 box-border overflow-hidden">
                         <h2 class="text-xl whitespace-nowrap text-ellipsis truncate">Card Title That Exceeds a few lines aaaaa a aaaaa</h2>
                         <p class="text-xs whitespace-nowrap text-ellipsis overflow-hidden">@username</p>
@@ -33,30 +34,30 @@
                 </article>
             </div>
         </main>
-        <aside class="sm:col-start-4 sm:col-end-6 bg-slate-400 shrink-0">
+        <aside class="sm:col-start-4 sm:col-end-6 bg-violet-100 shrink-0">
             <section class="flex flex-col gap-2">
                 <h1 class="text-2xl">Quick Actions</h1>
-                <article class="p-4 bg-slate-100 border-box bg-red- rounded-xl flex justify-between">
+                <article class="p-4 bg-slate-100 border-box bg-white shadow-md rounded-xl flex justify-between items-center">
                     <span>See upcoming appointments</span>
-                    <span>=></span>
+                    <span class="material-symbols-outlined text-orange-600">arrow_circle_right</span>
                 </article>
-                <article class="p-4 bg-slate-100 border-box rounded-xl flex justify-between">
+                <article class="p-4 bg-white shadow-md border-box rounded-xl flex justify-between items-center">
                     <span>See available appointments</span>
-                    <span>=></span>
+                    <span class="material-symbols-outlined text-orange-600">arrow_circle_right</span>
                 </article>
             </section>
             <section class="flex flex-col gap-2 mt-8">
-                <h1 class="text-2xl">Add appointment</h1>
-                <article class="p-4 bg-slate-100 border-box rounded-xl flex justify-between">
-                    <span>Host an appointments</span>
-                    <span>=></span>
+                <h1 class="text-2xl color-blue">Add appointment</h1>
+                <article class="p-4 shadow-md bg-white border-box rounded-xl flex justify-between items-center">
+                    <span>Host an appointment</span>
+                    <span class="material-symbols-outlined text-orange-600">arrow_circle_right</span>
                 </article>
                 <article class="text-center">--or--</article>
                 <article>
-                    <form action="#" class="flex flex-col ">
-                        <label for="appointment_id">View Appointment</label>
+                    <form action="#" class="flex flex-col gap-2">
+                        <label for="appointment_id" class="text-orange-600">View Appointment</label>
                         <input type="text" name="appointment_id" placeholder="Enter appointment code or URL" id="">
-                        <button class="p-4 bg-slate-600 color-white m-4" type="submit">View</button>
+                        <button class="p-1 text-sm bg-amber-400 rounded-lg text-white font-medium" type="submit">View</button>
                     </form>
                 </article>
             </section>
