@@ -9,12 +9,12 @@
     <link rel="stylesheet" href="../dist/output.css">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
 </head>
-<body>
-    <main class="container grid grid-cols-1 sm:grid-cols-5 mx-auto bg-sky-100 justify-stretch px-10 gap-10 overflow-hidden mt-10">
-        <main class="sm:col-start-1 sm:col-end-4 flex flex-col bg-blue-100 grow-0 gap-2">
+<body class="">
+    <main class="mb-[50vh] container grid grid-cols-1 sm:grid-cols-12 mx-auto bg-sky-100 justify-stretch px-10 sm:px-0 gap-10 overflow-hidden mt-10">
+        <main class="sm:col-start-2 sm:col-end-8 flex flex-col bg-blue-100 grow-0 gap-2">
             <h1 class="text-2xl">At a Glance</h1>
             <div class="flex flex-col gap-4">
-                <article class="flex flex-col md:flex-row flex-col-reverse shadow-sm bg-white rounded-xl justify-items-stretch shadow-md">
+                <article class="flex md:flex-row flex-col-reverse shadow-sm bg-white rounded-xl justify-items-stretch shadow-md">
                     <div class="flex flex-col justify-center py-2 px-4 box-border overflow-hidden">
                         <h2 class="text-xl whitespace-nowrap text-ellipsis truncate">Card Title That Exceeds a few lines aaaaa a aaaaa</h2>
                         <p class="text-xs whitespace-nowrap text-ellipsis overflow-hidden">@username</p>
@@ -34,10 +34,10 @@
                 </article>
             </div>
         </main>
-        <aside class="sm:col-start-4 sm:col-end-6 bg-violet-100 shrink-0">
+        <aside class="sm:col-start-8 sm:col-end-12 bg-violet-100 shrink-0">
             <section class="flex flex-col gap-2">
                 <h1 class="text-2xl">Quick Actions</h1>
-                <article class="p-4 bg-slate-100 border-box bg-white shadow-md rounded-xl flex justify-between items-center">
+                <article class="p-4 bg-white border-box shadow-md rounded-xl flex justify-between items-center gap-2">
                     <span>See upcoming appointments</span>
                     <span class="material-symbols-outlined text-orange-600">arrow_circle_right</span>
                 </article>
@@ -52,18 +52,23 @@
                     <span>Host an appointment</span>
                     <span class="material-symbols-outlined text-orange-600">arrow_circle_right</span>
                 </article>
-                <article class="text-center">--or--</article>
+                <article class="text-center mt-1">--or--</article>
                 <article>
-                    <form action="#" class="flex flex-col gap-2">
-                        <label for="appointment_id" class="text-orange-600">View Appointment</label>
-                        <input type="text" name="appointment_id" placeholder="Enter appointment code or URL" id="">
-                        <button class="p-1 text-sm bg-amber-400 rounded-lg text-white font-medium" type="submit">View</button>
+                    <form action="#" class="flex flex-col">
+                        <label for="appointment_id" class="text-xs text-orange-600 font-medium">VIEW APPOINTMENT</label>
+                        <input type="text" name="appointment_id" class="py-2 px-2 focus:border-b-orange-600 outline-0 border-b-4 border-b-gray-300" placeholder="Enter appointment code or URL" id="">
+                        <button class="mt-2 p-2 text-sm bg-amber-400 rounded-lg text-white font-medium" type="submit">View</button>
                     </form>
                 </article>
             </section>
         </aside>
         <!--img class="basis-3/12 aspect-square" src="https://hanzfelix.github.io/click-directory/ima/gtest_image.jpg"-->
     </main>
+    <main class="mb-[50vh] container grid grid-cols-1 sm:grid-cols-5 mx-auto bg-sky-100 justify-stretch px-10 gap-10 overflow-hidden mt-10">
+        <
+    </main>
 </body>
 
 </html>
+<!-- npx tailwindcss -i ./css/sample.css -o ./dist/output.css --watch -->
+<!-- npm run dev -->
