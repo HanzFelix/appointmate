@@ -7,16 +7,12 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Tailwind",
+            "name": "Run Vue Dev",
             "cwd": "${workspaceFolder}",
-            "runtimeExecutable": "npx",
+            "runtimeExecutable": "npm",
             "runtimeArgs": [
-                "tailwindcss",
-                "-i",
-                "./css/sample.css",
-                "-o",
-                "./dist/output.css",
-                "--watch"
+                "run",
+                "dev"
             ]
         }
     ]
