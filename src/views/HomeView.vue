@@ -73,17 +73,14 @@ import QuickLinkItem from "../components/QuickLinkItem.vue";
           />
         </RouterLink>
         <footer class="text-right font-medium text-orange-600 underline">
-          <RouterLink to="profile/booked" href="#">See all...</RouterLink>
+          <RouterLink to="profile" href="#">See all...</RouterLink>
         </footer>
       </div>
     </main>
     <aside class="shrink-0 bg-white sm:col-start-8 sm:col-end-13">
       <section class="flex flex-col gap-2">
         <header class="text-2xl">Quick Actions</header>
-        <QuickLinkItem
-          title="See upcoming appointments"
-          link="profile/booked"
-        />
+        <QuickLinkItem title="See upcoming appointments" link="profile" />
         <QuickLinkItem title="See available appointments" link="profile" />
       </section>
       <section class="mt-8 flex flex-col gap-2">

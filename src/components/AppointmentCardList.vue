@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import AppointmentCardItem from "../components/AppointmentCardItem.vue";
+import AppointmentCardItem from "./AppointmentCardItem.vue";
 
 const props = defineProps({
   filter: String,

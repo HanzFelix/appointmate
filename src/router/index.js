@@ -5,7 +5,6 @@ import MainView from "../views/MainView.vue";
 import LoginView from "../views/LoginView.vue";
 import AppointmentFormView from "../views/AppointmentFormView.vue";
 import AppointmentDetailsView from "../views/AppointmentDetailsView.vue";
-import AppointmentCardsView from "../views/AppointmentCardsView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,12 +18,8 @@ const router = createRouter({
         {
           path: "/profile",
           name: "profile",
-          component: ProfileView,
+          component: ProfileView /*
           children: [
-            {
-              path: "",
-              redirect: "/profile/hosted",
-            },
             {
               path: "hosted",
               name: "hosted",
@@ -37,7 +32,7 @@ const router = createRouter({
               component: AppointmentCardsView,
               props: { filter: "Card Title Booked" },
             },
-          ],
+          ],*/,
         },
         {
           path: "/home",

@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import AppointmentCardsView from "./AppointmentCardsView.vue";
+import AppointmentCardList from "../components/AppointmentCardList.vue";
 import QuickLinkItem from "../components/QuickLinkItem.vue";
 
 const activeTab = ref(1);
@@ -12,52 +12,63 @@ function setActiveTab(num) {
 <template>
   <!-- Profile -->
   <main
-    class="container flex flex-col-reverse sm:grid sm:grid-cols-12 mx-auto bg-white justify-stretch px-10 box-border gap-10 overflow-hidden sm:mt-10 justify-stretch overflow-y-auto"
+    class="justify-stretch justify-stretch container mx-auto box-border flex flex-col-reverse gap-10 overflow-hidden overflow-y-auto bg-white px-10 sm:mt-10 sm:grid sm:grid-cols-12"
   >
     <main class="sm:col-start-1 sm:col-end-8">
       <nav
-        class="text-sm font-medium text-center text-black border-b border-transparent sticky mb-2 top-0 bg-white shadow-[0_8px_4px_-4px_rgba(0,0,0,0.1)]"
+        class="sticky top-0 mb-2 border-b border-transparent bg-white text-center text-sm font-medium text-black shadow-[0_8px_4px_-4px_rgba(0,0,0,0.1)]"
       >
         <ul class="flex">
-          <li class="w-full -mb-px">
-            <RouterLink
-              to="/profile/hosted"
+          <li class="-mb-px w-full">
+            <a
+              href="#"
               @click="setActiveTab(1)"
               :class="{
-                'text-orange-600 border-orange-600': activeTab == 1,
+                'border-orange-600 text-orange-600': activeTab == 1,
               }"
-              class="inline-block w-full p-4 border-b-2 border-transparent rounded-t-lg hover:text-amber-400 hover:border-amber-400"
+              class="inline-block w-full rounded-t-lg border-b-2 border-transparent p-4 hover:border-amber-400 hover:text-amber-400"
             >
               Hosted Appointments
-            </RouterLink>
+            </a>
           </li>
-          <li class="w-full -mb-px">
-            <RouterLink
-              to="/profile/booked"
+          <li class="-mb-px w-full">
+            <a
+              href="#"
               @click="setActiveTab(2)"
               :class="{
-                'text-orange-600 border-orange-600': activeTab == 2,
+                'border-orange-600 text-orange-600': activeTab == 2,
               }"
-              class="inline-block w-full p-4 border-b-2 border-transparent rounded-t-lg hover:text-amber-400 hover:border-amber-400"
+              class="inline-block w-full rounded-t-lg border-b-2 border-transparent p-4 hover:border-amber-400 hover:text-amber-400"
             >
               Booked Appointments
-            </RouterLink>
+            </a>
           </li>
         </ul>
       </nav>
-      <RouterView />
+      <AppointmentCardList
+        filter="hosted"
+        :class="{
+          hidden: activeTab != 1,
+        }"
+      />
+      <AppointmentCardList
+        filter="booked"
+        :class="{
+          hidden: activeTab != 2,
+        }"
+      />
     </main>
     <aside
-      class="sm:col-start-8 sm:col-end-13 bg-white shrink-0 flex flex-col gap-2 sm:h-[inherit] pt-10 sm:pt-0"
+      class="flex shrink-0 flex-col gap-2 bg-white pt-10 sm:col-start-8 sm:col-end-13 sm:h-[inherit] sm:pt-0"
     >
       <section class="sticky top-0">
-        <header class="text-2xl flex flex-col items-center">
+        <header class="flex flex-col items-center text-2xl">
           <img
             src="/img/ak_stare.png"
-            class="bg-indigo-800 rounded-full border-4 border-gray-300 w-32"
+            class="w-32 rounded-full border-4 border-gray-300 bg-indigo-800"
             alt=""
           />
-          <h3 class="text-lg whitespace-nowrap text-ellipsis overflow-hidden">
+          <h3 class="overflow-hidden text-ellipsis whitespace-nowrap text-lg">
             @username
           </h3>
         </header>
