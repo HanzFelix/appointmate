@@ -1,12 +1,36 @@
 <template>
   <!-- Login -->
   <div
-    class="z-10 flex h-screen items-center bg-center"
+    class="fixed flex h-screen w-screen items-center bg-center"
     style="background-image: url('/img/login_bg.jpg')"
   >
-    <main
-      class="container z-30 mx-auto grid grid-cols-1 gap-10 overflow-hidden px-10 pb-12 sm:grid-cols-12"
+    <div
+      class="container z-20 mx-auto grid w-full grid-cols-12 bg-[#4f4f4f] px-10 opacity-80 mix-blend-multiply"
     >
+      <div class="lg:col-start-1 lg:col-end-8">
+        <h1 class="text-tranasparent text-4xl">
+          All appointments, in one place
+        </h1>
+        <p class="text-transparent">
+          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Repellendus
+          reiciendis ut mollitia in, inventore blanditiis.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="z-10 flex h-screen items-center">
+    <main
+      class="container z-30 mx-auto grid grid-cols-1 items-center gap-10 overflow-hidden px-10 sm:grid-cols-12"
+    >
+      <div class="lg:col-start-1 lg:col-end-8">
+        <h1 class="text-4xl text-white opacity-100">
+          All appointments, in one place
+        </h1>
+        <p class="text-white opacity-100">
+          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Repellendus
+          reiciendis ut mollitia in, inventore blanditiis.
+        </p>
+      </div>
       <section
         class="flex grow-0 flex-col gap-6 rounded-3xl bg-white p-10 shadow-md sm:col-start-3 sm:col-end-11 lg:col-start-8 lg:col-end-12"
       >
@@ -53,12 +77,5 @@
         </form>
       </section>
     </main>
-  </div>
-  <div class="fixed z-20 bg-[#4f4f4f] opacity-50 mix-blend-multiply">
-    <h1>All appointments, in one place</h1>
-    <p>
-      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Repellendus
-      reiciendis ut mollitia in, inventore blanditiis.
-    </p>
   </div>
 </template>
