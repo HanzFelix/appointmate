@@ -2,14 +2,14 @@
   <!-- Create/Edit Appointment -->
   <main class="overflow-y-auto">
     <section
-      class="w-full h-80 bg-cover bg-center"
-      style="background-image: url('../public/img/sample.jpg')"
+      class="h-80 w-full bg-cover bg-center"
+      style="background-image: url('/img/sample.jpg')"
     ></section>
     <main
-      class="container grid grid-cols-1 sm:grid-cols-12 mx-auto bg-white justify-stretch px-10 gap-10 py-10"
+      class="justify-stretch container mx-auto grid grid-cols-1 gap-10 bg-white px-10 py-10 sm:grid-cols-12"
     >
       <main
-        class="sm:col-start-1 sm:col-end-8 flex flex-col bg-white grow-0 gap-2"
+        class="flex grow-0 flex-col gap-2 bg-white sm:col-start-1 sm:col-end-8"
       >
         <section class="flex justify-between">
           <h1 class="text-3xl">Multiline Title that Exceeds a Few Lines</h1>
@@ -37,11 +37,11 @@
         </p>
       </main>
       <!-- sidebar -->
-      <aside class="sm:col-start-8 sm:col-end-13 bg-white shrink-0">
+      <aside class="shrink-0 bg-white sm:col-start-8 sm:col-end-13">
         <section class="flex flex-col gap-2">
           <header class="text-2xl">Quick Actions</header>
           <article
-            class="p-4 bg-white border-box shadow-md rounded-xl flex justify-between items-center gap-2"
+            class="border-box flex items-center justify-between gap-2 rounded-xl bg-white p-4 shadow-md"
           >
             <span>See upcoming appointments</span>
             <span class="material-symbols-outlined text-orange-600"
@@ -49,7 +49,7 @@
             >
           </article>
           <article
-            class="p-4 bg-white shadow-md border-box rounded-xl flex justify-between items-center"
+            class="border-box flex items-center justify-between rounded-xl bg-white p-4 shadow-md"
           >
             <span>See available appointments</span>
             <span class="material-symbols-outlined text-orange-600"
@@ -57,34 +57,34 @@
             >
           </article>
         </section>
-        <section class="flex flex-col gap-2 mt-8">
+        <section class="mt-8 flex flex-col gap-2">
           <h1 class="text-2xl">Add appointment</h1>
           <article
-            class="p-4 shadow-md bg-white border-box rounded-xl flex justify-between items-center"
+            class="border-box flex items-center justify-between rounded-xl bg-white p-4 shadow-md"
           >
             <span>Host an appointment</span>
             <span class="material-symbols-outlined text-orange-600"
               >arrow_circle_right</span
             >
           </article>
-          <p class="text-center mt-1">--or--</p>
+          <p class="mt-1 text-center">--or--</p>
           <form action="#" class="flex flex-col">
             <article class="flex flex-col">
               <label
                 for="appointment_id"
-                class="text-xs text-orange-600 font-medium"
+                class="text-xs font-medium text-orange-600"
                 >VIEW APPOINTMENT</label
               >
               <input
                 type="text"
                 name="appointment_id"
-                class="py-2 focus:border-b-orange-600 outline-0 border-b-2 border-gray-300"
+                class="border-b-2 border-gray-300 py-2 outline-0 focus:border-b-orange-600"
                 placeholder="Enter appointment code or URL"
                 id=""
               />
             </article>
             <button
-              class="mt-2 p-2 text-sm bg-amber-400 rounded-lg text-white font-medium"
+              class="mt-2 rounded-lg bg-amber-400 p-2 text-sm font-medium text-white"
               type="submit"
             >
               View

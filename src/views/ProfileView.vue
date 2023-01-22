@@ -1,58 +1,13 @@
 <script setup>
 import { ref } from "vue";
-import AppointmentCardItem from "../components/AppointmentCardItem.vue";
+import AppointmentCardsView from "./AppointmentCardsView.vue";
 import QuickLinkItem from "../components/QuickLinkItem.vue";
 
-const appointmentList = ref([
-  {
-    id: 0,
-    title: "Card Title",
-    user: "@username",
-    description: "Some description",
-    datetime: "01/01/2001 12:00 AM (in 7 days)",
-    image_src: "/public/img/sample.jpg",
-  },
-  {
-    id: 0,
-    title: "Card Title",
-    user: "@username",
-    description: "Some description",
-    datetime: "01/01/2001 12:00 AM (in 7 days)",
-    image_src: "/public/img/sample.jpg",
-  },
-  {
-    id: 0,
-    title: "Card Title",
-    user: "@username",
-    description: "Some description",
-    datetime: "01/01/2001 12:00 AM (in 7 days)",
-    image_src: "/public/img/sample.jpg",
-  },
-  {
-    id: 0,
-    title: "Card Title",
-    user: "@username",
-    description: "Some description",
-    datetime: "01/01/2001 12:00 AM (in 7 days)",
-    image_src: "/public/img/sample.jpg",
-  },
-  {
-    id: 0,
-    title: "Card Title",
-    user: "@username",
-    description: "Some description",
-    datetime: "01/01/2001 12:00 AM (in 7 days)",
-    image_src: "/public/img/sample.jpg",
-  },
-  {
-    id: 0,
-    title: "Card Title",
-    user: "@username",
-    description: "Some description",
-    datetime: "01/01/2001 12:00 AM (in 7 days)",
-    image_src: "/public/img/sample.jpg",
-  },
-]);
+const activeTab = ref(1);
+
+function setActiveTab(num) {
+  activeTab.value = num;
+}
 </script>
 <template>
   <!-- Profile -->
@@ -65,179 +20,32 @@ const appointmentList = ref([
       >
         <ul class="flex">
           <li class="w-full -mb-px">
-            <a
-              href="#"
+            <RouterLink
+              to="/profile/hosted"
+              @click="setActiveTab(1)"
+              :class="{
+                'text-orange-600 border-orange-600': activeTab == 1,
+              }"
               class="inline-block w-full p-4 border-b-2 border-transparent rounded-t-lg hover:text-amber-400 hover:border-amber-400"
-              >Hosted Appointments</a
             >
+              Hosted Appointments
+            </RouterLink>
           </li>
           <li class="w-full -mb-px">
-            <a
-              href="#"
-              class="inline-block w-full p-4 text-orange-600 border-b-2 border-orange-600 rounded-t-lg active"
-              aria-current="page"
-              >Booked Appointments</a
+            <RouterLink
+              to="/profile/booked"
+              @click="setActiveTab(2)"
+              :class="{
+                'text-orange-600 border-orange-600': activeTab == 2,
+              }"
+              class="inline-block w-full p-4 border-b-2 border-transparent rounded-t-lg hover:text-amber-400 hover:border-amber-400"
             >
+              Booked Appointments
+            </RouterLink>
           </li>
         </ul>
       </nav>
-      <div class="flex flex-col gap-4 items-stretch pb-64">
-        <AppointmentCardItem
-          v-for="item in appointmentList"
-          v-bind:appointment="item"
-          v-bind:key="item.id"
-        ></AppointmentCardItem>
-        <!--article
-          class="flex md:flex-row flex-col-reverse bg-white rounded-xl justify-items-stretch shadow-md"
-        >
-          <div
-            class="flex flex-col justify-center py-2 px-4 box-border overflow-hidden"
-          >
-            <h2 class="text-xl whitespace-nowrap text-ellipsis truncate">
-              Card Title That Exceeds a few lines aaaaa a aaaaa
-            </h2>
-            <p class="text-xs whitespace-nowrap text-ellipsis overflow-hidden">
-              @username
-            </p>
-            <p
-              class="text-sm leading-4 h-8 flex-auto overflow-hidden text-ellipsis"
-            >
-              May May May May May May May May or may not contain an image.
-              Filler text to fill enough to end with an ellipsis
-            </p>
-            <p
-              class="text-xs whitespace-nowrap text-ellipsis overflow-hidden mt-1"
-            >
-              01/01/2001 12:00 AM (in 7 days)
-            </p>
-          </div>
-          <img
-            src="/public/img/sample.jpg"
-            alt=""
-            class="md:w-36 shrink-0 h-28 object-cover rounded-t-xl md:rounded-tl-none md:rounded-r-xl"
-          />
-        </article>
-        <article
-          class="flex md:flex-row flex-col-reverse bg-white rounded-xl justify-items-stretch shadow-md"
-        >
-          <div
-            class="flex flex-col justify-center py-2 px-4 box-border overflow-hidden"
-          >
-            <h2 class="text-xl whitespace-nowrap text-ellipsis truncate">
-              Card Title That Exceeds a few lines aaaaa a aaaaa
-            </h2>
-            <p class="text-xs whitespace-nowrap text-ellipsis overflow-hidden">
-              @username
-            </p>
-            <p
-              class="text-sm leading-4 h-8 flex-auto overflow-hidden text-ellipsis"
-            >
-              May May May May May May May May or may not contain an image.
-              Filler text to fill enough to end with an ellipsis
-            </p>
-            <p
-              class="text-xs whitespace-nowrap text-ellipsis overflow-hidden mt-1"
-            >
-              01/01/2001 12:00 AM (in 7 days)
-            </p>
-          </div>
-          <img
-            src="https://hanzfelix.github.io/click-directory/img/default_bg_2.jpg"
-            alt=""
-            class="md:w-36 shrink-0 h-28 object-cover rounded-t-xl md:rounded-tl-none md:rounded-r-xl"
-          />
-        </article>
-        <article
-          class="flex md:flex-row flex-col-reverse bg-white rounded-xl justify-items-stretch shadow-md"
-        >
-          <div
-            class="flex flex-col justify-center py-2 px-4 box-border overflow-hidden"
-          >
-            <h2 class="text-xl whitespace-nowrap text-ellipsis truncate">
-              Card Title That Exceeds a few lines aaaaa a aaaaa
-            </h2>
-            <p class="text-xs whitespace-nowrap text-ellipsis overflow-hidden">
-              @username
-            </p>
-            <p
-              class="text-sm leading-4 h-8 flex-auto overflow-hidden text-ellipsis"
-            >
-              May May May May May May May May or may not contain an image.
-              Filler text to fill enough to end with an ellipsis
-            </p>
-            <p
-              class="text-xs whitespace-nowrap text-ellipsis overflow-hidden mt-1"
-            >
-              01/01/2001 12:00 AM (in 7 days)
-            </p>
-          </div>
-          <img
-            src="https://hanzfelix.github.io/click-directory/img/default_bg_2.jpg"
-            alt=""
-            class="md:w-36 shrink-0 h-28 object-cover rounded-t-xl md:rounded-tl-none md:rounded-r-xl"
-          />
-        </article>
-        <article
-          class="flex md:flex-row flex-col-reverse bg-white rounded-xl justify-items-stretch shadow-md"
-        >
-          <div
-            class="flex flex-col justify-center py-2 px-4 box-border overflow-hidden"
-          >
-            <h2 class="text-xl whitespace-nowrap text-ellipsis truncate">
-              Card Title That Exceeds a few lines aaaaa a aaaaa
-            </h2>
-            <p class="text-xs whitespace-nowrap text-ellipsis overflow-hidden">
-              @username
-            </p>
-            <p
-              class="text-sm leading-4 h-8 flex-auto overflow-hidden text-ellipsis"
-            >
-              May May May May May May May May or may not contain an image.
-              Filler text to fill enough to end with an ellipsis
-            </p>
-            <p
-              class="text-xs whitespace-nowrap text-ellipsis overflow-hidden mt-1"
-            >
-              01/01/2001 12:00 AM (in 7 days)
-            </p>
-          </div>
-          <img
-            src="https://hanzfelix.github.io/click-directory/img/default_bg_2.jpg"
-            alt=""
-            class="md:w-36 shrink-0 h-28 object-cover rounded-t-xl md:rounded-tl-none md:rounded-r-xl"
-          />
-        </article>
-        <article
-          class="flex md:flex-row flex-col-reverse bg-white rounded-xl justify-items-stretch shadow-md"
-        >
-          <div
-            class="flex flex-col justify-center py-2 px-4 box-border overflow-hidden"
-          >
-            <h2 class="text-xl whitespace-nowrap text-ellipsis truncate">
-              Card Title That Exceeds a few lines aaaaa a aaaaa
-            </h2>
-            <p class="text-xs whitespace-nowrap text-ellipsis overflow-hidden">
-              @username
-            </p>
-            <p
-              class="text-sm leading-4 h-8 flex-auto overflow-hidden text-ellipsis"
-            >
-              May May May May May May May May or may not contain an image.
-              Filler text to fill enough to end with an ellipsis
-            </p>
-            <p
-              class="text-xs whitespace-nowrap text-ellipsis overflow-hidden mt-1"
-            >
-              01/01/2001 12:00 AM (in 7 days)
-            </p>
-          </div>
-          <img
-            src="https://hanzfelix.github.io/click-directory/img/default_bg_2.jpg"
-            alt=""
-            class="md:w-36 shrink-0 h-28 object-cover rounded-t-xl md:rounded-tl-none md:rounded-r-xl"
-          />
-        </article-->
-      </div>
+      <RouterView />
     </main>
     <aside
       class="sm:col-start-8 sm:col-end-13 bg-white shrink-0 flex flex-col gap-2 sm:h-[inherit] pt-10 sm:pt-0"
@@ -245,7 +53,7 @@ const appointmentList = ref([
       <section class="sticky top-0">
         <header class="text-2xl flex flex-col items-center">
           <img
-            src="/public/img/ak_stare.png"
+            src="/img/ak_stare.png"
             class="bg-indigo-800 rounded-full border-4 border-gray-300 w-32"
             alt=""
           />
@@ -253,7 +61,7 @@ const appointmentList = ref([
             @username
           </h3>
         </header>
-        <QuickLinkItem title="Host an appointment" link="appointmentform" />
+        <QuickLinkItem title="Host an appointment" link="/appointmentform" />
       </section>
     </aside>
   </main>
