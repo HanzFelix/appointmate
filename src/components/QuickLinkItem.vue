@@ -8,7 +8,7 @@ const props = defineProps({
 <template>
   <RouterLink
     :to="link"
-    class="p-4 shadow-md bg-white border-box rounded-xl flex justify-between items-center hover:text-orange-600 active:bg-orange-500 transition-colors group"
+    class="border-box group flex items-center justify-between rounded-xl bg-white p-4 shadow-md shadow-stone-400 transition-colors hover:text-orange-600 active:bg-orange-500"
   >
     <span class="group-active:text-white">{{ title }}</span>
     <span

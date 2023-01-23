@@ -1,7 +1,7 @@
 <template>
   <!-- Login -->
   <div
-    class="fixed flex h-screen w-screen items-center bg-center"
+    class="fixed flex h-screen w-screen items-center bg-cover"
     style="background-image: url('/img/login_bg.jpg')"
   >
     <div

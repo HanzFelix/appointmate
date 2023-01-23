@@ -5,7 +5,10 @@ import ProfileView from "./ProfileView.vue";
 </script>
 
 <template>
-  <div class="h-screen flex flex-col items-stretch">
+  <div
+    class="flex h-screen flex-col items-stretch bg-cover"
+    style="background-image: url('/img/login_bg.jpg')"
+  >
     <TopBar />
     <RouterView />
   </div>

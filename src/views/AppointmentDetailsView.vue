@@ -1,6 +1,6 @@
 <template>
   <!-- Create/Edit Appointment -->
-  <main class="overflow-y-auto">
+  <main class="container mx-auto overflow-y-auto">
     <section
       class="h-80 w-full bg-cover bg-center"
       style="background-image: url('/img/sample.jpg')"
@@ -39,22 +39,20 @@
       <!-- sidebar -->
       <aside class="shrink-0 bg-white sm:col-start-8 sm:col-end-13">
         <section class="flex flex-col gap-2">
-          <header class="text-2xl">Quick Actions</header>
-          <article
-            class="border-box flex items-center justify-between gap-2 rounded-xl bg-white p-4 shadow-md"
-          >
-            <span>See upcoming appointments</span>
-            <span class="material-symbols-outlined text-orange-600"
-              >arrow_circle_right</span
+          <header class="text-2xl">Available time schedules</header>
+          <article class="flex flex-col">
+            <label
+              for="appointment_id"
+              class="text-xs font-medium text-orange-600"
+              >VIEW APPOINTMENT</label
             >
-          </article>
-          <article
-            class="border-box flex items-center justify-between rounded-xl bg-white p-4 shadow-md"
-          >
-            <span>See available appointments</span>
-            <span class="material-symbols-outlined text-orange-600"
-              >arrow_circle_right</span
-            >
+            <input
+              type="text"
+              name="appointment_id"
+              class="border-b-2 border-gray-300 py-2 outline-0 focus:border-b-orange-600"
+              placeholder="Enter appointment code or URL"
+              id=""
+            />
           </article>
         </section>
         <section class="mt-8 flex flex-col gap-2">

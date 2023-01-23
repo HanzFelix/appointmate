@@ -12,11 +12,11 @@ function setActiveTab(num) {
 <template>
   <!-- Profile -->
   <main
-    class="justify-stretch justify-stretch container mx-auto box-border flex flex-col-reverse gap-10 overflow-hidden overflow-y-auto bg-white px-10 sm:mt-10 sm:grid sm:grid-cols-12"
+    class="justify-stretch justify-stretch container mx-auto box-border flex h-full flex-col-reverse gap-10 overflow-hidden overflow-y-auto bg-white px-10 sm:grid sm:grid-cols-12 sm:pt-10"
   >
-    <main class="sm:col-start-1 sm:col-end-8">
+    <main class="rounded-t-xl sm:col-start-1 sm:col-end-8 sm:overflow-y-auto">
       <nav
-        class="sticky top-0 mb-2 border-b border-transparent bg-white text-center text-sm font-medium text-black shadow-[0_8px_4px_-4px_rgba(0,0,0,0.1)]"
+        class="sticky top-0 mb-2 border-b border-transparent bg-white text-center text-sm font-medium text-black shadow-md shadow-gray-400"
       >
         <ul class="flex">
           <li class="-mb-px w-full">
@@ -59,10 +59,12 @@ function setActiveTab(num) {
       />
     </main>
     <aside
-      class="flex shrink-0 flex-col gap-2 bg-white pt-10 sm:col-start-8 sm:col-end-13 sm:h-[inherit] sm:pt-0"
+      class="flex shrink-0 flex-col gap-2 pt-10 sm:col-start-8 sm:col-end-13 sm:h-[inherit] sm:pt-0"
     >
       <section class="sticky top-0">
-        <header class="flex flex-col items-center text-2xl">
+        <header
+          class="mb-4 flex flex-col items-center gap-2 rounded-xl bg-white py-4 text-2xl"
+        >
           <img
             src="/img/ak_stare.png"
             class="w-32 rounded-full border-4 border-gray-300 bg-indigo-800"

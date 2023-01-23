@@ -3,7 +3,14 @@ import { ref } from "vue";
 import AppointmentCardItem from "./AppointmentCardItem.vue";
 
 const props = defineProps({
-  filter: String,
+  filter: {
+    type: String,
+    default: "Card Title",
+  },
+  limit: {
+    type: Number,
+    default: 100,
+  },
 });
 const appointmentList = ref([
   {
@@ -57,11 +64,9 @@ const appointmentList = ref([
 ]);
 </script>
 <template>
-  <div class="flex flex-col items-stretch gap-4 pb-64">
-    <AppointmentCardItem
-      v-for="item in appointmentList"
-      v-bind:appointment="item"
-      v-bind:key="item.id"
-    />
+  <div class="flex flex-col items-stretch gap-4">
+    <template v-for="(item, index) in appointmentList" v-bind:key="item.id">
+      <AppointmentCardItem v-bind:appointment="item" v-if="index < limit"
+    /></template>
   </div>
 </template>
