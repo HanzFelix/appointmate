@@ -5,26 +5,28 @@
     style="background-image: url('/img/login_bg.jpg')"
   >
     <div
-      class="container z-20 mx-auto grid w-full grid-cols-12 bg-[#4f4f4f] px-10 opacity-80 mix-blend-multiply"
+      class="z-20 hidden w-full bg-[#4f4f4f] opacity-50 mix-blend-multiply lg:block"
     >
-      <div class="lg:col-start-1 lg:col-end-8">
-        <h1 class="text-tranasparent text-4xl">
-          All appointments, in one place
-        </h1>
-        <p class="text-transparent">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Repellendus
-          reiciendis ut mollitia in, inventore blanditiis.
-        </p>
+      <div class="container mx-auto grid grid-cols-12 gap-10 px-10 py-8">
+        <div class="lg:col-start-2 lg:col-end-6">
+          <h1 class="mb-8 text-4xl text-transparent">
+            All appointments, <br />in one place
+          </h1>
+          <p class="text-transparent">
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+            Repellendus reiciendis ut mollitia in, inventore blanditiis.
+          </p>
+        </div>
       </div>
     </div>
   </div>
-  <div class="z-10 flex h-screen items-center">
+  <div class="z-10 flex h-screen w-full items-center">
     <main
       class="container z-30 mx-auto grid grid-cols-1 items-center gap-10 overflow-hidden px-10 sm:grid-cols-12"
     >
-      <div class="lg:col-start-1 lg:col-end-8">
-        <h1 class="text-4xl text-white opacity-100">
-          All appointments, in one place
+      <div class="hidden lg:col-start-2 lg:col-end-6 lg:block">
+        <h1 class="mb-8 text-4xl text-white">
+          All appointments, <br />in one place
         </h1>
         <p class="text-white opacity-100">
           Lorem, ipsum dolor sit amet consectetur adipisicing elit. Repellendus
