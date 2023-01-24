@@ -5,23 +5,25 @@ import AppointmentCardList from "../components/AppointmentCardList.vue";
 <template>
   <!-- Home -->
   <main
-    class="container mx-auto grid h-full grid-cols-1 gap-10 overflow-hidden overflow-y-auto bg-white px-10 py-10 sm:grid-cols-12"
+    class="container mx-auto grid h-full grid-cols-1 gap-10 overflow-hidden overflow-y-auto bg-zinc-100 px-10 py-10 sm:grid-cols-12"
   >
-    <main class="flex flex-col gap-2 bg-white sm:col-start-1 sm:col-end-8">
+    <main class="flex flex-col gap-2 sm:col-start-1 sm:col-end-8">
       <header class="text-2xl">Upcoming</header>
-      <AppointmentCardList limit="2" />
+      <AppointmentCardList limit="3" />
       <footer class="text-right font-medium text-orange-600 underline">
         <RouterLink to="profile" href="#">See all...</RouterLink>
       </footer>
     </main>
-    <aside class="shrink-0 bg-white sm:col-start-8 sm:col-end-13">
+    <aside class="shrink-0 sm:col-start-8 sm:col-end-13">
       <section class="flex flex-col gap-2">
         <header class="text-2xl">Quick Actions</header>
         <QuickLinkItem title="See upcoming appointments" link="profile" />
         <QuickLinkItem title="See available appointments" link="profile" />
       </section>
-      <section class="mt-8 flex flex-col gap-2">
-        <h1 class="text-2xl">Add appointment</h1>
+      <section
+        class="mt-8 flex flex-col gap-2 rounded-2xl bg-white p-6 shadow-md shadow-zinc-400"
+      >
+        <h1 class="text-xl">Add appointment</h1>
         <QuickLinkItem title="Host an appointment" link="appointmentform" />
         <p class="mt-1 text-center">--or--</p>
         <form action="#" class="flex flex-col">
