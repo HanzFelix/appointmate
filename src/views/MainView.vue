@@ -1,7 +1,5 @@
 <script setup>
 import TopBar from "../components/Topbar.vue";
-import HomeView from "./HomeView.vue";
-import ProfileView from "./ProfileView.vue";
 </script>
 
 <template>

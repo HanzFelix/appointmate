@@ -18,7 +18,7 @@ function setActiveTab(num) {
       class="rounded-t-xl px-1 pb-1 sm:col-start-1 sm:col-end-8 sm:overflow-y-auto"
     >
       <nav
-        class="sticky top-0 mb-2 border-b border-transparent bg-white text-center text-sm font-medium text-stone-700 shadow-md shadow-stone-400"
+        class="sticky top-0 mb-2 border-b border-transparent bg-white text-center text-sm font-medium text-stone-700 shadow-md shadow-zinc-400"
       >
         <ul class="flex">
           <li class="-mb-px w-full">

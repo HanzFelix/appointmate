@@ -6,13 +6,13 @@ import ButtonAlternative from "../components/ButtonAlternative.vue";
   <!-- Create/Edit Appointment -->
   <main class="container mx-auto flex h-full flex-col overflow-y-auto">
     <section
-      class="h-80 w-full shrink-0 bg-cover bg-center"
+      class="h-40 w-full shrink-0 bg-cover bg-center sm:h-60 md:h-80"
       style="background-image: url('/img/sample.jpg')"
     ></section>
     <main
-      class="justify-stretch grid basis-full grid-cols-1 gap-10 bg-white px-10 py-10 md:grid-cols-12"
+      class="justify-stretch grid basis-full grid-cols-1 gap-10 bg-white p-10 lg:grid-cols-12"
     >
-      <main class="flex flex-col gap-2 bg-white md:col-start-1 md:col-end-8">
+      <main class="flex flex-col gap-2 bg-white lg:col-start-1 lg:col-end-8">
         <header class="text-2xl">Details</header>
         <form action="#" class="flex flex-col gap-4">
           <article class="flex flex-col">
@@ -42,13 +42,9 @@ import ButtonAlternative from "../components/ButtonAlternative.vue";
               placeholder="Enter description"
             ></textarea>
           </article>
-          <footer class="flex flex-row-reverse gap-4">
-            <ButtonAlternative text="Discard/Delete" />
-            <ButtonPrimary text="Create/Update" />
-          </footer>
         </form>
       </main>
-      <aside class="shrink-0 bg-white md:col-start-8 md:col-end-13">
+      <aside class="shrink-0 bg-white lg:col-start-8 lg:col-end-13">
         <section class="flex flex-col gap-2">
           <header class="text-2xl">Available time schedules</header>
           <!--date schedule-->
@@ -106,6 +102,10 @@ import ButtonAlternative from "../components/ButtonAlternative.vue";
               </div>
             </article>
           </article>
+          <footer class="mt-4 flex flex-row-reverse gap-4">
+            <ButtonAlternative text="Discard/Delete" />
+            <ButtonPrimary text="Create/Update" />
+          </footer>
         </section>
       </aside>
     </main>

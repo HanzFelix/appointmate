@@ -1,12 +1,17 @@
+<script setup>
+import ButtonPrimary from "../components/ButtonPrimary.vue";
+import ButtonAlternative from "../components/ButtonAlternative.vue";
+import QuickLinkItem from "../components/QuickLinkItem.vue";
+</script>
 <template>
   <!-- Create/Edit Appointment -->
-  <main class="container mx-auto overflow-y-auto">
+  <main class="container mx-auto flex h-full flex-col overflow-y-auto">
     <section
-      class="h-80 w-full bg-cover bg-center"
+      class="h-40 w-full shrink-0 bg-cover bg-center sm:h-60 md:h-80"
       style="background-image: url('/img/sample.jpg')"
     ></section>
     <main
-      class="justify-stretch container mx-auto grid grid-cols-1 gap-10 bg-white px-10 py-10 sm:grid-cols-12"
+      class="justify-stretch grid basis-full grid-cols-1 gap-10 bg-white px-10 py-10 sm:grid-cols-12"
     >
       <main
         class="flex grow-0 flex-col gap-2 bg-white sm:col-start-1 sm:col-end-8"
@@ -37,57 +42,145 @@
         </p>
       </main>
       <!-- sidebar -->
-      <aside class="shrink-0 bg-white sm:col-start-8 sm:col-end-13">
-        <section class="flex flex-col gap-2">
-          <header class="text-2xl">Available time schedules</header>
-          <article class="flex flex-col">
-            <label
-              for="appointment_id"
-              class="text-xs font-medium text-orange-600"
-              >VIEW APPOINTMENT</label
-            >
-            <input
-              type="text"
-              name="appointment_id"
-              class="border-b-2 border-gray-300 py-2 outline-0 focus:border-b-orange-600"
-              placeholder="Enter appointment code or URL"
-              id=""
-            />
-          </article>
-        </section>
-        <section class="mt-8 flex flex-col gap-2">
-          <h1 class="text-2xl">Add appointment</h1>
-          <article
-            class="border-box flex items-center justify-between rounded-xl bg-white p-4 shadow-md"
+      <aside class="shrink-0 sm:col-start-8 sm:col-end-13">
+        <section class="flex flex-col gap-4">
+          <header class="text-2xl">
+            Available time schedules/Booked appointment/Booked appointments
+          </header>
+          <!--when booked appointment is available-->
+          <section
+            class="flex flex-col gap-4 rounded-2xl p-4 shadow-md shadow-zinc-400"
           >
-            <span>Host an appointment</span>
-            <span class="material-symbols-outlined text-orange-600"
-              >arrow_circle_right</span
-            >
-          </article>
-          <p class="mt-1 text-center">--or--</p>
-          <form action="#" class="flex flex-col">
             <article class="flex flex-col">
               <label
                 for="appointment_id"
                 class="text-xs font-medium text-orange-600"
-                >VIEW APPOINTMENT</label
+                >DATE</label
               >
-              <input
-                type="text"
-                name="appointment_id"
-                class="border-b-2 border-gray-300 py-2 outline-0 focus:border-b-orange-600"
-                placeholder="Enter appointment code or URL"
-                id=""
+              <select
+                id="standard-select"
+                class="rounded-xl bg-white p-2.5 shadow-md shadow-stone-400 outline-orange-600 focus:border-orange-600"
+              >
+                <option value="Option 1">Select Date</option>
+                <option value="Option 2">Oct 12, 2022 (Tue)</option>
+                <option value="Option 3">Oct 13, 2022 (Wed)</option>
+              </select>
+            </article>
+            <article class="flex flex-col">
+              <label
+                for="appointment_id"
+                class="text-xs font-medium text-orange-600"
+                >TIME</label
+              >
+              <select
+                id="standard-select"
+                class="rounded-xl bg-white p-2.5 shadow-md shadow-stone-400 outline-orange-600 focus:border-orange-600"
+              >
+                <option value="Option 1">Select Time Period</option>
+                <option value="Option 2">9:00 AM - 10:00 AM</option>
+                <option value="Option 3">10:00 AM - 11:00 AM</option>
+                <option value="Option 3">11:00 AM - 12:00 PM</option>
+              </select>
+            </article>
+            <footer class="flex flex-row-reverse gap-4">
+              <ButtonPrimary text="Book Appointment" />
+            </footer>
+          </section>
+          <!--when booked-->
+          <section
+            class="flex flex-col gap-4 rounded-2xl p-4 shadow-md shadow-zinc-400"
+          >
+            <article class="flex flex-col">
+              <label
+                for="appointment_id"
+                class="text-xs font-medium text-orange-600"
+                >DATE</label
+              >
+              <select
+                disabled
+                id="standard-select"
+                class="rounded-xl bg-white p-2.5 shadow-md shadow-stone-400 outline-orange-600 focus:border-orange-600"
+              >
+                <option value="Option 1">Select Date</option>
+                <option value="Option 2" selected>Oct 12, 2022 (Tue)</option>
+                <option value="Option 3">Oct 13, 2022 (Wed)</option>
+              </select>
+            </article>
+            <article class="flex flex-col">
+              <label
+                for="appointment_id"
+                class="text-xs font-medium text-orange-600"
+                >TIME</label
+              >
+              <select
+                disabled
+                id="standard-select"
+                class="rounded-xl bg-white p-2.5 shadow-md shadow-stone-400 outline-orange-600 focus:border-orange-600"
+              >
+                <option value="Option 1">Select Time Period</option>
+                <option value="Option 2" selected>9:00 AM - 10:00 AM</option>
+                <option value="Option 3">10:00 AM - 11:00 AM</option>
+                <option value="Option 3">11:00 AM - 12:00 PM</option>
+              </select>
+            </article>
+            <footer class="flex flex-row-reverse gap-4">
+              <ButtonPrimary text="Edit Booked Appointment" />
+            </footer>
+          </section>
+          <!--when editing booked appointment -->
+          <section
+            class="flex flex-col gap-4 rounded-2xl p-4 shadow-md shadow-zinc-400"
+          >
+            <article class="flex flex-col">
+              <label
+                for="appointment_id"
+                class="text-xs font-medium text-orange-600"
+                >DATE</label
+              >
+              <select
+                id="standard-select"
+                class="rounded-xl bg-white p-2.5 shadow-md shadow-stone-400 outline-orange-600 focus:border-orange-600"
+              >
+                <option value="Option 1">Select Date</option>
+                <option value="Option 2" selected>Oct 12, 2022 (Tue)</option>
+                <option value="Option 3">Oct 13, 2022 (Wed)</option>
+              </select>
+            </article>
+            <article class="flex flex-col">
+              <label
+                for="appointment_id"
+                class="text-xs font-medium text-orange-600"
+                >TIME</label
+              >
+              <select
+                id="standard-select"
+                class="rounded-xl bg-white p-2.5 shadow-md shadow-stone-400 outline-orange-600 focus:border-orange-600"
+              >
+                <option value="Option 1">Select Time Period</option>
+                <option value="Option 2" selected>9:00 AM - 10:00 AM</option>
+                <option value="Option 3">10:00 AM - 11:00 AM</option>
+                <option value="Option 3">11:00 AM - 12:00 PM</option>
+              </select>
+            </article>
+            <footer class="flex flex-row-reverse gap-4">
+              <ButtonPrimary text="Reschedule" />
+              <ButtonAlternative text="Cancel" />
+            </footer>
+          </section>
+          <!-- host perspective -->
+          <section
+            class="flex flex-col gap-4 rounded-2xl p-4 shadow-md shadow-zinc-400"
+          >
+            <article class="flex flex-col">
+              <QuickLinkItem
+                title="Host an appointment"
+                link="appointmentform"
               />
             </article>
-            <button
-              class="mt-2 rounded-lg bg-amber-400 p-2 text-sm font-medium text-white"
-              type="submit"
-            >
-              View
-            </button>
-          </form>
+            <footer class="flex flex-row-reverse gap-4">
+              <ButtonPrimary text="Edit appointment" />
+            </footer>
+          </section>
         </section>
       </aside>
     </main>

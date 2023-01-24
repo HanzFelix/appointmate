@@ -21,7 +21,7 @@ import AppointmentCardList from "../components/AppointmentCardList.vue";
         <QuickLinkItem title="See available appointments" link="profile" />
       </section>
       <section
-        class="mt-8 flex flex-col gap-2 rounded-2xl bg-white p-6 shadow-md shadow-zinc-400"
+        class="mt-8 flex flex-col gap-2 rounded-2xl bg-white p-6 pt-4 shadow-md shadow-zinc-400"
       >
         <h1 class="text-xl">Add appointment</h1>
         <QuickLinkItem title="Host an appointment" link="appointmentform" />
