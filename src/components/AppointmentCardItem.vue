@@ -6,7 +6,7 @@ const props = defineProps({
 
 <template>
   <RouterLink
-    class="group flex flex-col-reverse justify-between rounded-xl bg-white shadow-md shadow-stone-400 transition-colors md:flex-row"
+    class="group flex flex-col-reverse justify-between rounded-xl bg-white shadow-md shadow-zinc-400 transition-colors md:flex-row"
     to="/appointmentdetails"
   >
     <div
