@@ -1,3 +1,6 @@
+<script setup>
+import ButtonPrimary from "../components/ButtonPrimary.vue";
+</script>
 <template>
   <!-- Login -->
   <div
@@ -5,7 +8,7 @@
     style="background-image: url('/img/login_bg.jpg')"
   >
     <div
-      class="z-20 hidden w-full bg-[#4f4f4f] opacity-50 mix-blend-multiply lg:block"
+      class="z-20 hidden w-full bg-[#4f4f4f] opacity-60 mix-blend-multiply lg:block"
     >
       <div class="container mx-auto grid grid-cols-12 gap-10 px-10 py-8">
         <div class="lg:col-start-2 lg:col-end-6">
@@ -70,12 +73,7 @@
             />
           </article>
           <a href="#">Forgot password?</a>
-          <button
-            class="mt-2 self-start rounded-lg bg-amber-400 p-2 px-6 text-sm font-medium text-white"
-            type="submit"
-          >
-            Log in
-          </button>
+          <article class="flex"><ButtonPrimary text="Log in" /></article>
         </form>
       </section>
     </main>

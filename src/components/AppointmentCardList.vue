@@ -5,7 +5,7 @@ import AppointmentCardItem from "./AppointmentCardItem.vue";
 const props = defineProps({
   filter: {
     type: String,
-    default: "Card Title",
+    default: "Appointment Title",
   },
   limit: {
     type: Number,
@@ -23,7 +23,7 @@ const appointmentList = ref([
   },
   {
     id: 1,
-    title: "Card Title",
+    title: props.filter + " but it's long",
     user: "@username",
     description: "Some description",
     datetime: "01/01/2001 12:00 AM (in 7 days)",
@@ -31,7 +31,7 @@ const appointmentList = ref([
   },
   {
     id: 2,
-    title: "Card Title",
+    title: props.filter + " but it's unnecessarily verbose",
     user: "@username",
     description: "Some description",
     datetime: "01/01/2001 12:00 AM (in 7 days)",

@@ -12,11 +12,13 @@ function setActiveTab(num) {
 <template>
   <!-- Profile -->
   <main
-    class="justify-stretch justify-stretch container mx-auto box-border flex h-full flex-col-reverse gap-10 overflow-hidden overflow-y-auto bg-white px-10 sm:grid sm:grid-cols-12 sm:pt-10"
+    class="justify-stretch justify-stretch container mx-auto box-border flex h-full flex-col-reverse gap-10 overflow-hidden overflow-y-auto bg-zinc-100 px-10 pb-10 sm:grid sm:grid-cols-12 sm:pt-10"
   >
-    <main class="rounded-t-xl sm:col-start-1 sm:col-end-8 sm:overflow-y-auto">
+    <main
+      class="rounded-t-xl px-1 pb-1 sm:col-start-1 sm:col-end-8 sm:overflow-y-auto"
+    >
       <nav
-        class="sticky top-0 mb-2 border-b border-transparent bg-white text-center text-sm font-medium text-black shadow-md shadow-gray-400"
+        class="sticky top-0 mb-2 border-b border-transparent bg-white text-center text-sm font-medium text-stone-700 shadow-md shadow-stone-400"
       >
         <ul class="flex">
           <li class="-mb-px w-full">
@@ -63,7 +65,7 @@ function setActiveTab(num) {
     >
       <section class="sticky top-0">
         <header
-          class="mb-4 flex flex-col items-center gap-2 rounded-xl bg-white py-4 text-2xl"
+          class="mb-4 flex flex-col items-center gap-2 rounded-xl bg-white py-4 text-2xl shadow-md shadow-zinc-400"
         >
           <img
             src="/img/ak_stare.png"
