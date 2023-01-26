@@ -5,6 +5,8 @@ import MainView from "../views/MainView.vue";
 import LoginView from "../views/LoginView.vue";
 import AppointmentFormView from "../views/AppointmentFormView.vue";
 import AppointmentDetailsView from "../views/AppointmentDetailsView.vue";
+import LoginMiniView from "../views/LoginMiniView.vue";
+import RegisterMiniView from "../views/RegisterMiniView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -55,6 +57,10 @@ const router = createRouter({
       path: "/login",
       name: "login",
       component: LoginView,
+      children: [
+        { path: "", component: LoginMiniView },
+        { path: "/register", component: RegisterMiniView },
+      ],
     },
   ],
 });
