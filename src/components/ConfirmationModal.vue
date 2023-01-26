@@ -21,11 +21,12 @@ function emitAsConfirm() {
   <!-- Model Background -->
   <div
     v-if="show"
+    @click.self="emitAsCancel"
     class="fixed inset-0 z-50 flex w-full items-center justify-center overflow-y-auto overflow-x-hidden bg-black bg-opacity-50 px-8"
   >
     <!-- Modal content -->
     <div
-      class="relative flex max-w-xl flex-col gap-2 rounded-2xl bg-white p-4 shadow-md shadow-zinc-400"
+      class="relative flex max-w-xl flex-col gap-2 rounded-2xl bg-white p-4 shadow-md"
     >
       <!-- Modal header -->
       <header class="flex items-start justify-between rounded-t p-2">
@@ -61,7 +62,7 @@ function emitAsConfirm() {
         </p>
       </div>
       <!-- Modal footer -->
-      <footer class="flex flex-row-reverse flex-wrap-reverse gap-x-4">
+      <footer class="flex flex-row-reverse flex-wrap-reverse gap-x-2">
         <ButtonAlternative text="Cancel" :click-action="emitAsCancel" />
         <ButtonPrimary
           text="Delete"
