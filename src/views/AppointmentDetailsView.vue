@@ -177,9 +177,10 @@ function deleteAppointment() {
             </article>
             <footer class="flex flex-row-reverse flex-wrap-reverse gap-x-4">
               <ButtonAlternative text="Cancel" />
-              <ButtonAlternative
+              <ButtonPrimary
                 text="Delete"
-                :clickAction="showConfirmationDialog"
+                :click-action="showConfirmationDialog"
+                variant="Danger"
               />
               <ButtonPrimary text="Reschedule" />
             </footer>
