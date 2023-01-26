@@ -2,6 +2,19 @@
 import ButtonPrimary from "../components/ButtonPrimary.vue";
 import ButtonAlternative from "../components/ButtonAlternative.vue";
 import QuickLinkItem from "../components/QuickLinkItem.vue";
+import ConfirmationModal from "../components/ConfirmationModal.vue";
+import { ref } from "vue";
+
+const showModal = ref(false);
+
+function showConfirmationDialog(bool) {
+  showModal.value = bool;
+}
+
+function deleteAppointment() {
+  showConfirmationDialog(false);
+  console.log("hi");
+}
 </script>
 <template>
   <!-- Create/Edit Appointment -->
@@ -162,9 +175,13 @@ import QuickLinkItem from "../components/QuickLinkItem.vue";
                 <option value="Option 3">11:00 AM - 12:00 PM</option>
               </select>
             </article>
-            <footer class="flex flex-row-reverse gap-4">
-              <ButtonPrimary text="Reschedule" />
+            <footer class="flex flex-row-reverse flex-wrap-reverse gap-x-4">
               <ButtonAlternative text="Cancel" />
+              <ButtonAlternative
+                text="Delete"
+                :clickAction="showConfirmationDialog"
+              />
+              <ButtonPrimary text="Reschedule" />
             </footer>
           </section>
           <!-- host perspective -->
@@ -185,4 +202,13 @@ import QuickLinkItem from "../components/QuickLinkItem.vue";
       </aside>
     </main>
   </main>
+  <Teleport to="body">
+    <ConfirmationModal
+      :show="showModal"
+      @cancel="showConfirmationDialog(false)"
+      @confirm="deleteAppointment()"
+      title="Delete Appointment"
+      message="Are you sure you want to delete? This cannot be undone."
+    />
+  </Teleport>
 </template>

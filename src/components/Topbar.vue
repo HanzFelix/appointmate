@@ -5,7 +5,7 @@
       <nav class="flex gap-4 text-white">
         <RouterLink to="/home">Home</RouterLink>
         <RouterLink to="/profile">Profile</RouterLink>
-        <RouterLink to="/login">Log Out</RouterLink>
+        <RouterLink to="/login">Log out</RouterLink>
       </nav>
     </div>
   </header>
