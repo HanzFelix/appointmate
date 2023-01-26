@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/HanzFelix/appointmate#readme",
   "dependencies": {
+    "firebase": "^9.16.0",
     "pinia": "^2.0.28",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6"
