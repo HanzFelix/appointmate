@@ -1,6 +1,17 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import AppointmentCardItem from "./AppointmentCardItem.vue";
+import { appointmateDB } from "@/firebase";
+import {
+  collection,
+  onSnapshot,
+  addDoc,
+  doc,
+  deleteDoc,
+  updateDoc,
+  query,
+  orderBy,
+} from "firebase/firestore";
 
 const props = defineProps({
   filter: {
@@ -8,11 +19,12 @@ const props = defineProps({
     default: "Appointment Title",
   },
   limit: {
-    type: Number,
     default: 100,
   },
 });
+
 const appointmentList = ref([
+  /*
   {
     id: 0,
     title: props.filter,
@@ -60,8 +72,30 @@ const appointmentList = ref([
     description: "Some description",
     datetime: "01/01/2001 12:00 AM (in 7 days)",
     image_src: "/img/sample.jpg",
-  },
+  },*/
 ]);
+
+const appointmentsColRef = collection(appointmateDB, "appointments");
+const appointmentsColQuery = query(appointmentsColRef, orderBy("host_id"));
+
+// get appointments
+onMounted(async () => {
+  onSnapshot(appointmentsColQuery, (querySnapshot) => {
+    const tempList = [];
+    querySnapshot.forEach((doc) => {
+      const appointment = {
+        id: doc.id,
+        title: doc.data().title,
+        host_id: doc.data().host_id,
+        description: doc.data().description,
+        datetime: doc.data().datetime,
+        image_path: "/img/sample.jpg",
+      };
+      tempList.push(appointment);
+    });
+    appointmentList.value = tempList;
+  });
+});
 </script>
 <template>
   <div class="flex flex-col items-stretch gap-4">

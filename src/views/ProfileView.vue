@@ -68,7 +68,7 @@ function setActiveTab(num) {
           class="mb-4 flex flex-col items-center gap-2 rounded-xl bg-white py-4 text-2xl shadow-md shadow-zinc-400"
         >
           <img
-            src="/img/ak_stare.png"
+            src="/img/avatar_stare.png"
             class="w-32 rounded-full border-4 border-gray-300 bg-indigo-800"
             alt=""
           />

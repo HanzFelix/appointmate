@@ -1,5 +1,6 @@
 <script setup>
-import LoginMini from "./LoginMiniView.vue";
+import { ref } from "vue";
+const heading = ref("hello");
 </script>
 <template>
   <!-- Login -->

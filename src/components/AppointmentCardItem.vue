@@ -2,6 +2,10 @@
 const props = defineProps({
   appointment: Object,
 });
+
+function toDate(timestamp) {
+  return new Date(timestamp.seconds * 1000);
+}
 </script>
 
 <template>
@@ -20,7 +24,7 @@ const props = defineProps({
       <p
         class="overflow-hidden text-ellipsis whitespace-nowrap text-xs text-gray-600 group-hover:text-orange-500 group-active:text-amber-400"
       >
-        {{ appointment.user }}
+        {{ "@" + appointment.host_id }}
       </p>
       <p
         class="h-8 flex-auto overflow-hidden text-ellipsis text-sm leading-4 group-hover:text-orange-600 group-active:text-amber-400"
@@ -30,11 +34,11 @@ const props = defineProps({
       <p
         class="mt-1 overflow-hidden text-ellipsis whitespace-nowrap text-xs group-hover:text-orange-500 group-active:text-amber-400"
       >
-        {{ appointment.datetime }}
+        Booked for: 12 PM
       </p>
     </div>
     <img
-      :src="appointment.image_src"
+      :src="appointment.image_path"
       alt=""
       class="h-32 shrink-0 rounded-t-xl object-cover md:w-40 md:rounded-r-xl md:rounded-tl-none"
     />
