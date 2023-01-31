@@ -70,8 +70,6 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const userStore = useUserStore();
-  console.log("requires auth: " + to.meta.requiresAuth);
-  console.log("logged in: " + userStore.isLoggedIn);
   if (!to.meta.requiresAuth && userStore.isLoggedIn) {
     next({ name: "home" });
   } else if (to.meta.requiresAuth && !userStore.isLoggedIn) {

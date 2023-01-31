@@ -37,13 +37,14 @@ export const useAppointmentStore = defineStore("appoiintments", {
   },
   actions: {
     async addAppointment(appointment) {
-      const userStore = useUserStore();
+      console.log("appointment ready. sending...");
       await addDoc(appointmentsRef, {
         title: appointment.title,
         description: appointment.description,
         image_path: appointment.image_path,
         host_id: appointment.host_id,
       });
+      return true;
     },
   },
 });

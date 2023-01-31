@@ -4,8 +4,10 @@ import ButtonPrimary from "../components/ButtonPrimary.vue";
 import ButtonAlternative from "../components/ButtonAlternative.vue";
 import { useUserStore } from "../stores/user";
 import { useAppointmentStore } from "../stores/appointment";
-const userStore = useUserStore();
+import { useRouter } from "vue-router";
 const appointmentStore = useAppointmentStore();
+const userStore = useUserStore();
+const router = useRouter();
 
 const appointmentTitle = ref("");
 const appointmentDesc = ref("");
@@ -18,9 +20,8 @@ async function onSubmit() {
     image_path: appointmentImg.value,
     host_id: userStore.getProfileId,
   };
-  console.log("appointment created: " + appointment);
   if (await appointmentStore.addAppointment(appointment)) {
-    router.push({ name: "home" });
+    router.push({ name: "profile" });
   }
 }
 </script>
