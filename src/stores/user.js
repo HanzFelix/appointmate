@@ -11,7 +11,12 @@ import {
 } from "firebase/firestore";
 
 const userRef = collection(appointmateDB, "users");
-const profileRef = collection(appointmateDB, "profiles");
+const profilesRef = collection(appointmateDB, "profiles");
+const emptyProfile = {
+  id: "not_logged_in",
+  avatar: "/img/avatar_tree.png",
+  username: "not_logged_in",
+};
 
 export const useUserStore = defineStore("user", {
   state: () => ({
@@ -20,15 +25,12 @@ export const useUserStore = defineStore("user", {
       : "",
     myUserProfile: localStorage.getItem("login-token")
       ? JSON.parse(localStorage.getItem("user-profile"))
-      : {},
-    tempUserProfile: {},
+      : emptyProfile,
+    tempUserProfile: emptyProfile,
   }),
   getters: {
     isLoggedIn() {
       return this.userId.length > 0;
-    },
-    getProfileId() {
-      return this.myUserProfile.id;
     },
   },
   actions: {
@@ -51,7 +53,7 @@ export const useUserStore = defineStore("user", {
         localStorage.setItem("login-token", this.userId);
 
         // load profile
-        this.myUserProfile = await this.loadUserProfile(this.userId);
+        this.myUserProfile = await this.loadProfileFromUserId(this.userId);
         localStorage.setItem(
           "user-profile",
           JSON.stringify(this.myUserProfile)
@@ -64,13 +66,13 @@ export const useUserStore = defineStore("user", {
     },
     logout() {
       this.userId = "";
-      this.myUserProfile = {};
+      this.myUserProfile = emptyProfile;
       localStorage.removeItem("login-token");
       localStorage.removeItem("user-profile");
     },
 
-    async loadUserProfile(user_id) {
-      const profileQuery = query(profileRef, where("user_id", "==", user_id));
+    async loadProfileFromUserId(user_id) {
+      const profileQuery = query(profilesRef, where("user_id", "==", user_id));
       const profileSnap = await getDocs(profileQuery);
       if (profileSnap.size == 0) {
         throw new Error("Unable to find profile");
@@ -83,6 +85,54 @@ export const useUserStore = defineStore("user", {
           username: doc.data().username,
         });
       });
+      this.tempUserProfile = profiles[0];
+      return profiles[0];
+    },
+
+    async loadProfileFromProfileId(profile_id) {
+      const profileRef = doc(appointmateDB, "profiles", profile_id);
+      const profileSnap = await getDoc(profileRef);
+
+      console.log("from user.js: ");
+      console.log(profileSnap.data());
+      return profileSnap.data();
+
+      /*
+      const profileQuery = query(profilesRef, where("user_id", "==", user_id));
+      const profileSnap = await getDocs(profileQuery);
+      if (profileSnap.size == 0) {
+        throw new Error("Unable to find profile");
+      }
+      const profiles = [];
+      profileSnap.forEach((doc) => {
+        profiles.push({
+          id: doc.id,
+          avatar: doc.data().avatar,
+          username: doc.data().username,
+        });
+      });
+      this.tempUserProfile = profiles[0];
+      return profiles[0];*/
+    },
+
+    async loadProfileFromUsername(username) {
+      const profileQuery = query(
+        profilesRef,
+        where("username", "==", username)
+      );
+      const profileSnap = await getDocs(profileQuery);
+      if (profileSnap.size == 0) {
+        throw new Error("Unable to find profile");
+      }
+      const profiles = [];
+      profileSnap.forEach((doc) => {
+        profiles.push({
+          id: doc.id,
+          avatar: doc.data().avatar,
+          username: doc.data().username,
+        });
+      });
+      this.tempUserProfile = profiles[0];
       return profiles[0];
     },
   },

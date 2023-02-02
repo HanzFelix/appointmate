@@ -8,6 +8,6 @@ import TopBar from "../components/Topbar.vue";
     style="background-image: url('/img/login_bg.jpg')"
   >
     <TopBar />
-    <RouterView />
+    <RouterView :key="$route.fullPath" />
   </div>
 </template>

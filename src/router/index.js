@@ -31,13 +31,14 @@ const router = createRouter({
           component: AppointmentFormView,
         },
         {
-          path: "/appointmentdetails",
+          path: "/appointment/:id",
           name: "appointmentdetails",
           component: AppointmentDetailsView,
+          props: true,
         },
         {
           path: "/profile",
-          name: "profile",
+          name: "myProfile",
           component: ProfileView /*
           children: [
             {
@@ -53,6 +54,12 @@ const router = createRouter({
               props: { filter: "Card Title Booked" },
             },
           ],*/,
+        },
+        {
+          path: "/profile/:username",
+          name: "profile",
+          component: ProfileView,
+          props: true,
         },
       ],
     },

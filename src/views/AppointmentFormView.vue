@@ -18,10 +18,13 @@ async function onSubmit() {
     title: appointmentTitle.value,
     description: appointmentDesc.value,
     image_path: appointmentImg.value,
-    host_id: userStore.getProfileId,
+    host_id: userStore.myUserProfile.id,
   };
   if (await appointmentStore.addAppointment(appointment)) {
-    router.push({ name: "profile" });
+    router.push({
+      name: "profile",
+      params: { username: userStore.myUserProfile.id },
+    });
   }
 }
 </script>

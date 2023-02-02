@@ -3,17 +3,44 @@ import ButtonPrimary from "../components/ButtonPrimary.vue";
 import ButtonAlternative from "../components/ButtonAlternative.vue";
 import QuickLinkItem from "../components/QuickLinkItem.vue";
 import ConfirmationModal from "../components/ConfirmationModal.vue";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { useAppointmentStore } from "../stores/appointment";
+import { useUserStore } from "../stores/user";
 
+const userStore = useUserStore();
 const showModal = ref(false);
+const appointmentIdRef = ref("");
+const loadedAppointmentRef = ref("");
+const loadedProfileRef = ref(userStore.tempUserProfile);
+
+const props = defineProps({
+  id: {
+    type: String,
+    default: "asd",
+  },
+});
+
+// states include: booked, available, host, unavailable
+const stateRef = ref("");
+
+onMounted(async () => {
+  appointmentIdRef.value = props.id;
+  const appointmentStore = useAppointmentStore();
+  loadedAppointmentRef.value = await appointmentStore.getAppointment(props.id);
+  console.log(loadedAppointmentRef.value);
+  loadedProfileRef.value = await userStore.loadProfileFromProfileId(
+    loadedAppointmentRef.value.host_id
+  );
+});
 
 function showConfirmationDialog(bool) {
   showModal.value = bool;
 }
 
+// actions to appointment
 function deleteAppointment() {
   showConfirmationDialog(false);
-  console.log("hi");
+  alert("hi");
 }
 </script>
 <template>
@@ -21,7 +48,9 @@ function deleteAppointment() {
   <main class="container mx-auto flex h-full flex-col overflow-y-auto">
     <section
       class="h-40 w-full shrink-0 bg-cover bg-center sm:h-60 md:h-80"
-      style="background-image: url('/img/sample.jpg')"
+      :style="{
+        'background-image': 'url(' + loadedAppointmentRef.image_path + ')',
+      }"
     ></section>
     <main
       class="justify-stretch grid basis-full grid-cols-1 gap-10 bg-white px-10 py-10 sm:grid-cols-12"
@@ -30,12 +59,18 @@ function deleteAppointment() {
         class="flex grow-0 flex-col gap-2 bg-white sm:col-start-1 sm:col-end-8"
       >
         <section class="flex justify-between">
-          <h1 class="text-3xl">Multiline Title that Exceeds a Few Lines</h1>
+          <h1 class="text-3xl">{{ loadedAppointmentRef.title }}</h1>
           <span class="material-symbols-outlined">link</span>
         </section>
         <section class="flex justify-between">
-          <RouterLink to="/profile" href="#" class="text-gray-600"
-            >@username</RouterLink
+          <RouterLink
+            :to="{
+              name: 'profile',
+              params: { username: loadedProfileRef.username },
+            }"
+            href="#"
+            class="text-gray-600"
+            >{{ "@" + loadedProfileRef.username }}</RouterLink
           >
           <section>
             <span>27 available</span>
@@ -44,7 +79,8 @@ function deleteAppointment() {
             >
           </section>
         </section>
-        <p>
+        <p>{{ loadedAppointmentRef.description }}</p>
+        <!--p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti
           eveniet, ipsum quia suscipit, pariatur dicta natus voluptatibus id
           sapiente dolorem eos quidem facere, incidunt et. Libero sit odio
@@ -52,7 +88,7 @@ function deleteAppointment() {
           adipisicing elit. Quibusdam quidem minima deleniti quod! Magnam
           eligendi animi, iste porro dignissimos ducimus sed, eius saepe
           molestiae, doloribus totam veritatis minus excepturi corrupti.
-        </p>
+        </p-->
       </main>
       <!-- sidebar -->
       <aside class="shrink-0 sm:col-start-8 sm:col-end-13">

@@ -11,7 +11,7 @@ function toDate(timestamp) {
 <template>
   <RouterLink
     class="group flex flex-col-reverse justify-between rounded-xl bg-white shadow-md shadow-zinc-400 transition-colors md:flex-row"
-    to="/appointmentdetails"
+    :to="{ name: 'appointmentdetails', params: { id: appointment.id } }"
   >
     <div
       class="box-border flex flex-col justify-center overflow-hidden py-2 px-4"
@@ -27,7 +27,7 @@ function toDate(timestamp) {
         {{ "@" + appointment.host_id }}
       </p>
       <p
-        class="h-8 flex-auto overflow-hidden text-ellipsis text-sm leading-4 group-hover:text-orange-600 group-active:text-amber-400"
+        class="h-8 flex-auto overflow-hidden text-ellipsis text-sm leading-4 group-hover:text-orange-600 group-active:text-amber-400 sm:leading-5"
       >
         {{ appointment.description }}
       </p>

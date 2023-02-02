@@ -1,6 +1,9 @@
 <script setup>
 import QuickLinkItem from "../components/QuickLinkItem.vue";
 import AppointmentCardList from "../components/AppointmentCardList.vue";
+import { useUserStore } from "../stores/user";
+
+const userStore = useUserStore();
 </script>
 <template>
   <!-- Home -->
@@ -16,7 +19,9 @@ import AppointmentCardList from "../components/AppointmentCardList.vue";
     </main>
     <aside class="shrink-0 sm:col-start-8 sm:col-end-13">
       <section class="flex flex-col gap-2">
-        <header class="text-2xl">Quick Actions</header>
+        <header class="text-2xl">
+          Hello {{ userStore.myUserProfile.username }},
+        </header>
         <QuickLinkItem title="See upcoming appointments" link="profile" />
         <QuickLinkItem title="See available appointments" link="profile" />
       </section>

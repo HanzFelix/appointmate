@@ -89,7 +89,7 @@ onMounted(async () => {
         host_id: doc.data().host_id,
         description: doc.data().description,
         datetime: doc.data().datetime,
-        image_path: "/img/sample.jpg",
+        image_path: doc.data().image_path,
       };
       tempList.push(appointment);
     });
