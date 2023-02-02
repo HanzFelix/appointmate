@@ -93,8 +93,6 @@ export const useUserStore = defineStore("user", {
       const profileRef = doc(appointmateDB, "profiles", profile_id);
       const profileSnap = await getDoc(profileRef);
 
-      console.log("from user.js: ");
-      console.log(profileSnap.data());
       return profileSnap.data();
 
       /*

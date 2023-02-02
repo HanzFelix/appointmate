@@ -98,7 +98,7 @@ onMounted(async () => {
 });
 </script>
 <template>
-  <div class="flex flex-col items-stretch gap-4">
+  <div class="flex flex-col items-stretch gap-4 px-1 pb-4">
     <template v-for="(item, index) in appointmentList" v-bind:key="item.id">
       <AppointmentCardItem v-bind:appointment="item" v-if="index < limit"
     /></template>

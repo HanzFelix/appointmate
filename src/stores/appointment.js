@@ -32,7 +32,7 @@ export const useAppointmentStore = defineStore("appoiintments", {
       title: "Appointment title",
       description:
         "No appointment loaded. Please wait a moment, or refresh the page instead",
-      image: "/img/sample.jpg",
+      image_path: "/img/sample.jpg",
       host_id: "asd",
     },
   }),

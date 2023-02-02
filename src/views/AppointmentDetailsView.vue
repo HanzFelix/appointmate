@@ -8,10 +8,15 @@ import { useAppointmentStore } from "../stores/appointment";
 import { useUserStore } from "../stores/user";
 
 const userStore = useUserStore();
+const appointmentStore = useAppointmentStore();
 const showModal = ref(false);
 const appointmentIdRef = ref("");
-const loadedAppointmentRef = ref("");
+const loadedAppointmentRef = ref(appointmentStore.tempAppointment);
 const loadedProfileRef = ref(userStore.tempUserProfile);
+const isMyAppointment = ref(false);
+const isFullSchedule = ref(false);
+const isEditingSchedule = ref(false);
+const isBooked = ref(false);
 
 const props = defineProps({
   id: {
@@ -25,12 +30,15 @@ const stateRef = ref("");
 
 onMounted(async () => {
   appointmentIdRef.value = props.id;
-  const appointmentStore = useAppointmentStore();
   loadedAppointmentRef.value = await appointmentStore.getAppointment(props.id);
   console.log(loadedAppointmentRef.value);
   loadedProfileRef.value = await userStore.loadProfileFromProfileId(
     loadedAppointmentRef.value.host_id
   );
+
+  if (loadedAppointmentRef.value.host_id == userStore.myUserProfile.id) {
+    isMyAppointment.value = true;
+  }
 });
 
 function showConfirmationDialog(bool) {
@@ -79,7 +87,9 @@ function deleteAppointment() {
             >
           </section>
         </section>
-        <p>{{ loadedAppointmentRef.description }}</p>
+        <p class="whitespace-pre-wrap">
+          {{ loadedAppointmentRef.description }}
+        </p>
         <!--p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti
           eveniet, ipsum quia suscipit, pariatur dicta natus voluptatibus id
@@ -98,6 +108,7 @@ function deleteAppointment() {
           </header>
           <!--when booked appointment is available-->
           <section
+            v-if="!isMyAppointment"
             class="flex flex-col gap-4 rounded-2xl p-4 shadow-md shadow-zinc-400"
           >
             <article class="flex flex-col">
@@ -137,6 +148,7 @@ function deleteAppointment() {
           </section>
           <!--when booked-->
           <section
+            v-if="isBooked && !isEditingSchedule"
             class="flex flex-col gap-4 rounded-2xl p-4 shadow-md shadow-zinc-400"
           >
             <article class="flex flex-col">
@@ -178,6 +190,7 @@ function deleteAppointment() {
           </section>
           <!--when editing booked appointment -->
           <section
+            v-if="isBooked && isEditingSchedule"
             class="flex flex-col gap-4 rounded-2xl p-4 shadow-md shadow-zinc-400"
           >
             <article class="flex flex-col">
@@ -223,6 +236,7 @@ function deleteAppointment() {
           </section>
           <!-- host perspective -->
           <section
+            v-if="isMyAppointment"
             class="flex flex-col gap-4 rounded-2xl p-4 shadow-md shadow-zinc-400"
           >
             <article class="flex flex-col">

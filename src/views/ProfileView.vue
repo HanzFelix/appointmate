@@ -48,7 +48,7 @@ watch(usernameRef, async (newValue, oldValue) => {
     class="justify-stretch justify-stretch container mx-auto box-border flex h-full flex-col-reverse gap-10 overflow-hidden overflow-y-auto bg-zinc-100 px-10 pb-10 sm:grid sm:grid-cols-12 sm:pt-10"
   >
     <main
-      class="rounded-t-xl px-1 pb-1 sm:col-start-1 sm:col-end-8 sm:overflow-y-auto"
+      class="rounded-t-xl pb-1 sm:col-start-1 sm:col-end-8 sm:overflow-y-auto"
     >
       <nav
         class="sticky top-0 mb-2 border-b border-transparent bg-white text-center text-sm font-medium text-stone-700 shadow-md shadow-zinc-400"

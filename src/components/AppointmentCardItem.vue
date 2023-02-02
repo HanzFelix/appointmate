@@ -1,6 +1,20 @@
 <script setup>
+import { async } from "@firebase/util";
+import { onMounted, ref, onBeforeMount } from "vue";
+import { useUserStore } from "../stores/user";
+
 const props = defineProps({
   appointment: Object,
+});
+
+const username = ref("[][][][][][][][][]");
+
+const userStore = useUserStore();
+
+onMounted(async () => {
+  username.value = (
+    await userStore.loadProfileFromProfileId(props.appointment.host_id)
+  ).username;
 });
 
 function toDate(timestamp) {
@@ -24,7 +38,7 @@ function toDate(timestamp) {
       <p
         class="overflow-hidden text-ellipsis whitespace-nowrap text-xs text-gray-600 group-hover:text-orange-500 group-active:text-amber-400"
       >
-        {{ "@" + appointment.host_id }}
+        {{ "@" + username }}
       </p>
       <p
         class="h-8 flex-auto overflow-hidden text-ellipsis text-sm leading-4 group-hover:text-orange-600 group-active:text-amber-400 sm:leading-5"
