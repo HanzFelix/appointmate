@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import ButtonPrimary from "../components/ButtonPrimary.vue";
 import ButtonAlternative from "../components/ButtonAlternative.vue";
 import { useUserStore } from "../stores/user";
@@ -12,6 +12,16 @@ const router = useRouter();
 const appointmentTitle = ref("");
 const appointmentDesc = ref("");
 const appointmentImg = ref("/img/sample.jpg");
+const schedules = ref([
+  {
+    date: "2023-02-03",
+    times: [
+      { starttime: "13:00", endtime: "14:00" },
+      { starttime: "", endtime: "" },
+    ],
+  },
+  { date: "", times: [] },
+]);
 
 async function onSubmit() {
   const appointment = {
@@ -20,12 +30,57 @@ async function onSubmit() {
     image_path: appointmentImg.value,
     host_id: userStore.myUserProfile.id,
   };
-  if (await appointmentStore.addAppointment(appointment)) {
+  if (await appointmentStore.addAppointment(appointment, schedules.value)) {
     router.push({
-      name: "profile",
-      params: { username: userStore.myUserProfile.id },
+      name: "appointmentdetails",
+      params: { id: appointmentStore.openedAppointmentid },
     });
   }
+}
+
+function hasValue(input) {
+  return input != "";
+}
+/*
+function times() {
+  let starttime = "00:00:00";
+  let endtime = "23:00:00";
+  let x = 60;
+  let startdate = new Date(Date.now().toLocaleDateString() + " " + starttime);
+}*/
+
+function getDates() {
+  let dates = [];
+  let starttime = "00:00:00";
+  let startdate = new Date().toLocaleDateString();
+  let tempdate = new Date(startdate + " " + starttime);
+  for (let i = 1; i <= 56; i++) {
+    dates.push(tempdate.setDate(tempdate.getDate() + 1));
+  }
+  return dates;
+}
+
+function getTimes() {
+  let times = [];
+  let endtime = "23:00:00";
+  let x = 60 * 60 * 1000;
+}
+
+function addDate(schedule) {
+  schedule.times.push({ starttime: "", endtime: "" });
+  schedules.value.push({ date: "", times: [] });
+}
+
+function addTime(times) {
+  times.push({ starttime: "", endtime: "" });
+}
+
+function removeSchedule(list, index) {
+  list.splice(index, 1);
+}
+
+function duplicateSchedule(schedule) {
+  schedules.value.splice(schedules.value.length - 1, 0, schedule);
 }
 </script>
 <template>
@@ -68,7 +123,7 @@ async function onSubmit() {
               class="border-b-2 border-gray-300 py-2 outline-0 focus:border-b-orange-600"
               placeholder="Enter title"
               v-model="appointmentTitle"
-              id=""
+              required
             />
           </article>
           <article class="flex flex-col">
@@ -83,65 +138,102 @@ async function onSubmit() {
               id=""
               placeholder="Enter description"
               v-model="appointmentDesc"
+              required
             ></textarea>
           </article>
         </main>
       </main>
       <aside class="shrink-0 bg-white lg:col-start-8 lg:col-end-13">
         <section class="flex flex-col gap-2">
-          <header class="text-2xl">Available time schedules</header>
-          <!--date schedule-->
+          <header class="text-2xl">Set available time schedules</header>
+          <!-- dynamic day schedule-->
           <article
             class="flex flex-col justify-items-stretch gap-2"
-            v-for="n in 2"
+            v-for="(schedule, index) in schedules"
           >
             <article class="flex items-center justify-between gap-2">
-              <select
-                id="standard-select"
+              <input
+                type="date"
+                v-model="schedule.date"
                 class="shadow-m basis-full rounded-xl bg-white p-2.5 shadow-md shadow-stone-400 outline-orange-600 focus:border-orange-600"
-              >
-                <option value="Option 1">Select Date</option>
-                <option value="Option 2">Oct 12, 2022 (Tue)</option>
-                <option value="Option 2">Jan 25, 2023 (Wed)</option>
-              </select>
+              />
               <div class="flex gap-2">
-                <span class="material-symbols-outlined text-orange-600"
-                  >content_copy</span
+                <button
+                  type="button"
+                  @click="duplicateSchedule(schedule)"
+                  :disabled="
+                    !hasValue(schedule.date) ||
+                    schedule.times.length == 0 ||
+                    !hasValue(schedule.times[0].endtime)
+                  "
+                  class="material-symbols-outlined text-orange-600 disabled:text-white"
                 >
-                <span class="material-symbols-outlined text-orange-600"
-                  >cancel</span
+                  content_copy
+                </button>
+                <button
+                  type="button"
+                  v-if="index != schedules.length - 1"
+                  @click="removeSchedule(schedules, index)"
+                  class="material-symbols-outlined text-orange-600"
                 >
+                  cancel
+                </button>
+                <button
+                  type="button"
+                  @click="addDate(schedule)"
+                  v-if="index == schedules.length - 1"
+                  :disabled="!hasValue(schedule.date)"
+                  class="material-symbols-outlined text-orange-600 disabled:text-zinc-400"
+                >
+                  add_circle
+                </button>
               </div>
             </article>
             <!--time schedule-->
-            <article v-for="n in 2" class="flex items-center justify-end gap-2">
+            <article
+              v-for="(time, t_index) in schedule.times"
+              class="flex items-center justify-end gap-2"
+            >
               <div
                 class="flex basis-full flex-wrap items-center justify-end gap-2"
               >
-                <select
-                  id="standard-select"
-                  class="box-border basis-5/12 rounded-xl bg-white p-2.5 shadow-md shadow-stone-400 outline-orange-600 focus:border-orange-600"
-                >
-                  <option value="Option 1">Time Start</option>
-                  <option value="Option 2">10:00 AM</option>
-                  <option value="Option 3">9:00 AM</option>
-                </select>
-                <select
-                  id="standard-select"
-                  class="box-border basis-5/12 rounded-xl bg-white p-2.5 shadow-md shadow-stone-400 outline-orange-600 focus:border-orange-600"
-                >
-                  <option value="Option 1">Time End</option>
-                  <option value="Option 2">10:00 AM</option>
-                  <option value="Option 3">9:00 AM</option>
-                </select>
+                <input
+                  :disabled="!hasValue(schedule.date)"
+                  type="time"
+                  v-model="time.starttime"
+                  class="box-border basis-5/12 rounded-xl bg-white p-2.5 shadow-md shadow-stone-400 outline-orange-600 focus:border-orange-600 disabled:text-zinc-400"
+                />
+                <input
+                  :disabled="!hasValue(time.starttime)"
+                  type="time"
+                  v-model="time.endtime"
+                  class="box-border basis-5/12 rounded-xl bg-white p-2.5 shadow-md shadow-stone-400 outline-orange-600 focus:border-orange-600 disabled:text-zinc-400"
+                />
               </div>
               <div class="flex gap-2">
-                <span class="material-symbols-outlined text-white"
-                  >content_copy</span
+                <button
+                  @click="removeSchedule(schedule.times, t_index)"
+                  type="button"
+                  v-if="t_index != schedule.times.length - 1"
+                  class="material-symbols-outlined text-orange-600 disabled:text-zinc-400"
                 >
-                <span class="material-symbols-outlined text-orange-600"
-                  >add_circle</span
+                  cancel
+                </button>
+                <span
+                  :disabled="!hasValue(time.endtime)"
+                  class="material-symbols-outlined text-white"
                 >
+                  content_copy
+                </span>
+                <button
+                  @click="addTime(schedule.times)"
+                  type="button"
+                  v-if="t_index == schedule.times.length - 1"
+                  :disabled="!hasValue(time.endtime)"
+                  class="material-symbols-outlined text-orange-600 disabled:text-zinc-400"
+                >
+                  add_circle
+                </button>
               </div>
             </article>
           </article>
