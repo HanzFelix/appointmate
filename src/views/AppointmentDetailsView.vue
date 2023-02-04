@@ -260,11 +260,11 @@ async function deleteAppointment() {
               <ButtonPrimary text="Edit appointment" />
             </footer>
           </section>
-          <ButtonPrimary
+          <!--ButtonPrimary
             text="TempDelete"
             :click-action="showConfirmationDialog"
             variant="Danger"
-          />
+          /-->
         </section>
       </aside>
     </main>

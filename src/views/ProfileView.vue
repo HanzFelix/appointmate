@@ -7,7 +7,9 @@ import { useUserStore } from "../stores/user";
 const props = defineProps({
   username: {
     type: String,
-    default: JSON.parse(localStorage.getItem("user-profile")).username,
+    default: localStorage.getItem("user-profile")
+      ? JSON.parse(localStorage.getItem("user-profile")).username
+      : "",
   },
   activeTab: {
     type: String,
@@ -21,6 +23,7 @@ const loadedProfileRef = ref(
   JSON.parse(localStorage.getItem("user-profile"))
   //  await userStore.loadProfileFromUsername(usernameRef.value)
 );
+const isMyProfile = ref(false);
 
 onMounted(async () => {
   usernameRef.value = props.username;
@@ -28,6 +31,8 @@ onMounted(async () => {
   loadedProfileRef.value = await userStore.loadProfileFromUsername(
     usernameRef.value
   );
+  isMyProfile.value =
+    props.username == userStore.myUserProfile.username ? true : false;
 });
 
 function setActiveTab(val) {
@@ -109,7 +114,11 @@ watch(usernameRef, async (newValue, oldValue) => {
             {{ "@" + usernameRef }}
           </h3>
         </header>
-        <QuickLinkItem title="Host an appointment" link="/appointmentform" />
+        <QuickLinkItem
+          title="Host an appointment"
+          v-if="isMyProfile"
+          link="/appointmentform"
+        />
       </section>
     </aside>
   </main>
