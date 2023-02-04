@@ -6,7 +6,9 @@ import ConfirmationModal from "../components/ConfirmationModal.vue";
 import { ref, onMounted } from "vue";
 import { useAppointmentStore } from "../stores/appointment";
 import { useUserStore } from "../stores/user";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const userStore = useUserStore();
 const appointmentStore = useAppointmentStore();
 const showModal = ref(false);
@@ -46,9 +48,14 @@ function showConfirmationDialog(bool) {
 }
 
 // actions to appointment
-function deleteAppointment() {
+async function deleteAppointment() {
   showConfirmationDialog(false);
-  alert("hi");
+  if (await appointmentStore.deleteAppointment(appointmentIdRef.value)) {
+    router.push({
+      name: "profile",
+      params: { username: userStore.myUserProfile.username },
+    });
+  }
 }
 </script>
 <template>
@@ -80,9 +87,11 @@ function deleteAppointment() {
             class="text-gray-600"
             >{{ "@" + loadedProfileRef.username }}</RouterLink
           >
-          <section>
+          <section class="flex items-center">
             <span>27 available</span>
-            <span class="material-symbols-outlined text-amber-400"
+            <span
+              class="material-symbols-outlined cursor-pointer text-amber-400"
+              @click="deleteAppointment()"
               >bookmark</span
             >
           </section>
@@ -103,14 +112,12 @@ function deleteAppointment() {
       <!-- sidebar -->
       <aside class="shrink-0 sm:col-start-8 sm:col-end-13">
         <section class="flex flex-col gap-4">
-          <header class="text-2xl">
-            Available time schedules/Booked appointment/Booked appointments
-          </header>
           <!--when booked appointment is available-->
           <section
             v-if="!isMyAppointment"
             class="flex flex-col gap-4 rounded-2xl p-4 shadow-md shadow-zinc-400"
           >
+            <header class="text-2xl">Available time schedules</header>
             <article class="flex flex-col">
               <label
                 for="appointment_id"
@@ -151,6 +158,7 @@ function deleteAppointment() {
             v-if="isBooked && !isEditingSchedule"
             class="flex flex-col gap-4 rounded-2xl p-4 shadow-md shadow-zinc-400"
           >
+            <header class="text-2xl">Booked appointment</header>
             <article class="flex flex-col">
               <label
                 for="appointment_id"
@@ -193,6 +201,7 @@ function deleteAppointment() {
             v-if="isBooked && isEditingSchedule"
             class="flex flex-col gap-4 rounded-2xl p-4 shadow-md shadow-zinc-400"
           >
+            <header class="text-2xl">Booked appointment</header>
             <article class="flex flex-col">
               <label
                 for="appointment_id"
@@ -239,16 +248,23 @@ function deleteAppointment() {
             v-if="isMyAppointment"
             class="flex flex-col gap-4 rounded-2xl p-4 shadow-md shadow-zinc-400"
           >
+            <header class="text-2xl">Booked appointments</header>
             <article class="flex flex-col">
-              <QuickLinkItem
+              <!--QuickLinkItem
                 title="Host an appointment"
                 link="appointmentform"
-              />
+              /-->
+              0 out of 27 schedules booked.
             </article>
             <footer class="flex flex-row-reverse gap-4">
               <ButtonPrimary text="Edit appointment" />
             </footer>
           </section>
+          <ButtonPrimary
+            text="TempDelete"
+            :click-action="showConfirmationDialog"
+            variant="Danger"
+          />
         </section>
       </aside>
     </main>
