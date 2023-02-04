@@ -14,8 +14,9 @@ import {
 } from "firebase/firestore";
 
 const appointmentsRef = collection(appointmateDB, "appointments");
+const schedulesRef = collection(appointmateDB, "schedules");
 
-export const useAppointmentStore = defineStore("appoiintments", {
+export const useAppointmentStore = defineStore("appointments", {
   state: () => ({
     appointments: [
       {
@@ -35,6 +36,7 @@ export const useAppointmentStore = defineStore("appoiintments", {
       image_path: "/img/sample.jpg",
       host_id: "asd",
     },
+    openedAppointmentid: "",
   }),
   getters: {
     hostedAppointments(state, profile_id) {
@@ -44,25 +46,63 @@ export const useAppointmentStore = defineStore("appoiintments", {
     },
   },
   actions: {
-    async addAppointment(appointment) {
+    async addAppointment(appointment, schedules) {
       console.log("appointment ready. sending...");
-      await addDoc(appointmentsRef, appointment);
+      const docRef = await addDoc(appointmentsRef, appointment);
+      this.openedAppointmentid = docRef.id;
+      console.log(schedules);
+
+      console.log("created appointment with id: " + this.openedAppointmentid);
+      const list = parseSchedules(schedules, docRef.id);
+      for (const schedule in list) {
+        await this.addSchedule(schedule);
+      }
       return true;
     },
     async getAppointment(appointment_id) {
-      // TODO need testing
       const appointmentRef = doc(appointmateDB, "appointments", appointment_id);
       const appointmentSnap = await getDoc(appointmentRef);
 
       return appointmentSnap.data();
     },
+
     async updateAppointment(appointment_id, updatedAppointment) {
-      updateDoc(doc(appointmentsRef, appointment_id), updatedAppointment);
+      await updateDoc(doc(appointmentsRef, appointment_id), updatedAppointment);
       return;
     },
+
     async deleteAppointment(appointment_id) {
-      deleteDoc(doc(appointmentsRef, appointment_id));
+      await deleteDoc(doc(appointmentsRef, appointment_id));
+      return true;
+    },
+
+    async addSchedule(schedule) {
+      await addDoc(schedulesRef, schedule);
       return;
     },
   },
 });
+function parseSchedules(schedules, appointmentId) {
+  const scheduleList = [];
+  for (const sched in schedules) {
+    if (sched.date == "") continue;
+    for (const times in sched.times) {
+      if (times.starttime == "") continue;
+      if (times.endtime == "") continue;
+
+      scheduleList.push({
+        appointee_id: "",
+        appointment_id: appointmentId,
+        timestart: stringToDatetime(times.starttime),
+        timeend: stringToDatetime(times.endtime),
+      });
+    }
+  }
+  return scheduleList;
+}
+function stringToDatetime(day, time) {
+  const [y, m, d] = day.split("-");
+  const [hh, mm] = time.split(":");
+
+  return new Date(+y, m - 1, +d, hh, mm);
+}
