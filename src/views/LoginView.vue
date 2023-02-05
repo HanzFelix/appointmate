@@ -1,7 +1,4 @@
-<script setup>
-import { ref } from "vue";
-const heading = ref("hello");
-</script>
+<script setup></script>
 <template>
   <!-- Login -->
   <div

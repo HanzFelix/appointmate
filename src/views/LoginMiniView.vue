@@ -1,17 +1,73 @@
 <script setup>
 import ButtonPrimary from "../components/ButtonPrimary.vue";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import { useUserStore } from "../stores/user";
-const userStore = useUserStore();
+import { useLocalStore } from "../stores/local";
+import { appointmateDB } from "@/firebase";
+import {
+  query,
+  where,
+  collection,
+  getDoc,
+  getDocs,
+  doc,
+} from "firebase/firestore";
+
+const localStore = useLocalStore();
 const router = useRouter();
+const userRef = collection(appointmateDB, "users");
+const profilesRef = collection(appointmateDB, "profiles");
+
 const email = ref("example1@mail.com");
 const password = ref("example");
+
 async function onSubmit() {
-  if (await userStore.login(email.value, password.value)) {
+  // login user
+  const userQuery = query(
+    userRef,
+    where("email", "==", email.value),
+    where("password", "==", password.value)
+  );
+  try {
+    const userSnap = await getDocs(userQuery);
+    if (userSnap.size == 0) {
+      // throw error text to display
+      alert("unable to find user");
+      return;
+    }
+
+    userSnap.forEach((doc) => {
+      localStore.myUserId = doc.id;
+    });
+
+    localStorage.setItem("login-token", localStore.myUserId);
+
+    // load profile
+    const profileQuery = query(
+      profilesRef,
+      where("user_id", "==", localStore.myUserId)
+    );
+    const profileSnap = await getDocs(profileQuery);
+    if (profileSnap.size == 0) {
+      alert("Unable to find profile");
+      return;
+    }
+    profileSnap.forEach((doc) => {
+      localStore.myProfile = {
+        id: doc.id,
+        avatar: doc.data().avatar,
+        username: doc.data().username,
+      };
+    });
+    localStorage.setItem("user-profile", JSON.stringify(localStore.myProfile));
+    localStore.loggedIn = true;
+
+    // Redirect to homepage after successful login
     router.push({ name: "home" });
-    //redirect page
+  } catch (error) {
+    alert("user error: " + error);
   }
+  return true;
 }
 </script>
 <template>

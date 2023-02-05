@@ -2,7 +2,16 @@
 import { ref, watch, onUpdated, onMounted } from "vue";
 import AppointmentCardList from "../components/AppointmentCardList.vue";
 import QuickLinkItem from "../components/QuickLinkItem.vue";
-import { useUserStore } from "../stores/user";
+import { useLocalStore } from "../stores/local";
+import { appointmateDB } from "../firebase";
+import {
+  query,
+  where,
+  collection,
+  getDoc,
+  getDocs,
+  doc,
+} from "firebase/firestore";
 
 const props = defineProps({
   username: {
@@ -17,35 +26,56 @@ const props = defineProps({
   },
 });
 
-const usernameRef = ref("");
+const localStore = useLocalStore();
 const activeTab = ref(props.activeTab); // todo: move inside onMounted()
-const loadedProfileRef = ref(
-  JSON.parse(localStorage.getItem("user-profile"))
-  //  await userStore.loadProfileFromUsername(usernameRef.value)
-);
+const loadedProfileRef = ref({
+  id: "",
+  avatar: "",
+  username: "user",
+});
+const profilesRef = collection(appointmateDB, "profiles");
 const isMyProfile = ref(false);
 
 onMounted(async () => {
-  usernameRef.value = props.username;
-  const userStore = useUserStore();
-  loadedProfileRef.value = await userStore.loadProfileFromUsername(
-    usernameRef.value
+  // LOAD PROFILE
+  // if viewing user's own profile
+  if (localStore.myProfile.username == props.username) {
+    loadedProfileRef.value = localStore.myProfile;
+    isMyProfile.value = true;
+    return;
+  }
+
+  // search profile using username.
+  const profileQuery = query(
+    profilesRef,
+    where("username", "==", props.username)
   );
-  isMyProfile.value =
-    props.username == userStore.myUserProfile.username ? true : false;
+  const profileSnap = await getDocs(profileQuery);
+
+  // found no profile
+  if (profileSnap.size == 0) {
+    alert("Unable to find profile");
+    return;
+  }
+
+  // get only first profile found
+  const profiles = [];
+  profileSnap.forEach((doc) => {
+    profiles.push({
+      id: doc.id,
+      avatar: doc.data().avatar,
+      username: doc.data().username,
+    });
+  });
+
+  // store retrieved profile
+  loadedProfileRef.value = profiles[0];
+  localStore.loadedProfileId = profiles[0].id;
 });
 
 function setActiveTab(val) {
   activeTab.value = val;
 }
-/*
-watch(usernameRef, async (newValue, oldValue) => {
-  usernameRef.value = newValue;
-  const userStore = useUserStore();
-  loadedProfileRef.value = await userStore.loadProfileFromUsername(
-    usernameRef.value
-  );
-});*/
 </script>
 <template>
   <!-- Profile -->
@@ -86,12 +116,14 @@ watch(usernameRef, async (newValue, oldValue) => {
         </ul>
       </nav>
       <AppointmentCardList
+        :profile-id="loadedProfileRef.id"
         filter="hosted"
         :class="{
           hidden: activeTab != 'hosted',
         }"
       />
       <AppointmentCardList
+        :profile-id="loadedProfileRef.id"
         filter="booked"
         :class="{
           hidden: activeTab != 'booked',
@@ -111,7 +143,7 @@ watch(usernameRef, async (newValue, oldValue) => {
             alt=""
           />
           <h3 class="overflow-hidden text-ellipsis whitespace-nowrap text-lg">
-            {{ "@" + usernameRef }}
+            {{ "@" + loadedProfileRef.username }}
           </h3>
         </header>
         <QuickLinkItem

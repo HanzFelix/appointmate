@@ -1,20 +1,35 @@
 <script setup>
 import ButtonPrimary from "../components/ButtonPrimary.vue";
 import ButtonAlternative from "../components/ButtonAlternative.vue";
-import QuickLinkItem from "../components/QuickLinkItem.vue";
 import ConfirmationModal from "../components/ConfirmationModal.vue";
 import { ref, onMounted } from "vue";
 import { useAppointmentStore } from "../stores/appointment";
-import { useUserStore } from "../stores/user";
+import { appointmateDB } from "../firebase";
 import { useRouter } from "vue-router";
+import {
+  query,
+  where,
+  collection,
+  getDoc,
+  getDocs,
+  doc,
+} from "firebase/firestore";
+import { useLocalStore } from "../stores/local";
 
 const router = useRouter();
-const userStore = useUserStore();
+const localStore = useLocalStore();
 const appointmentStore = useAppointmentStore();
+const schedulesRef = collection(appointmateDB, "schedules");
 const showModal = ref(false);
-const appointmentIdRef = ref("");
 const loadedAppointmentRef = ref(appointmentStore.tempAppointment);
-const loadedProfileRef = ref(userStore.tempUserProfile);
+const loadedProfileRef = ref(localStore.myProfile);
+
+const schedules = ref([]);
+
+// states include: booked, available, host, unavailable
+const stateRef = ref("");
+
+// deciding factors of state
 const isMyAppointment = ref(false);
 const isFullSchedule = ref(false);
 const isEditingSchedule = ref(false);
@@ -27,22 +42,55 @@ const props = defineProps({
   },
 });
 
-// states include: booked, available, host, unavailable
-const stateRef = ref("");
-
 onMounted(async () => {
-  appointmentIdRef.value = props.id;
-  loadedAppointmentRef.value = await appointmentStore.getAppointment(props.id);
-  console.log(loadedAppointmentRef.value);
-  loadedProfileRef.value = await userStore.loadProfileFromProfileId(
+  localStore.loadedAppointmentId = props.id;
+
+  // get appointment
+  const appointmentRef = doc(appointmateDB, "appointments", props.id);
+  const appointmentSnap = await getDoc(appointmentRef);
+  loadedAppointmentRef.value = appointmentSnap.data();
+
+  // get username
+  const profileRef = doc(
+    appointmateDB,
+    "profiles",
     loadedAppointmentRef.value.host_id
   );
+  const profileSnap = await getDoc(profileRef);
+  loadedProfileRef.value = profileSnap.data();
 
-  if (loadedAppointmentRef.value.host_id == userStore.myUserProfile.id) {
+  // allow management if logged in user is host
+  if (loadedAppointmentRef.value.host_id == localStore.myProfile.id) {
     isMyAppointment.value = true;
   }
+
+  // get appointment schedules
+  const schedulesQuery = query(
+    schedulesRef,
+    where("appointment_id", "==", props.id)
+  );
+  const schedulesSnap = await getDocs(schedulesQuery);
+
+  // found no schedules
+  if (schedulesSnap.size == 0) {
+    console.error("Unable to find schedules");
+    return;
+  }
+
+  // get all schedules
+  const schedulesTemp = [];
+  schedulesSnap.forEach((doc) => {
+    schedulesTemp.push({
+      id: doc.id,
+      appointment_id: doc.data().appointment_id,
+      timestart: doc.data().timestart,
+      timeend: doc.data().timeend,
+    });
+  });
+  schedules.value = schedulesTemp;
 });
 
+// delete dialog
 function showConfirmationDialog(bool) {
   showModal.value = bool;
 }
@@ -50,12 +98,18 @@ function showConfirmationDialog(bool) {
 // actions to appointment
 async function deleteAppointment() {
   showConfirmationDialog(false);
-  if (await appointmentStore.deleteAppointment(appointmentIdRef.value)) {
+  if (await appointmentStore.deleteAppointment(props.id)) {
     router.push({
       name: "profile",
-      params: { username: userStore.myUserProfile.username },
+      params: { username: localStore.myProfile.username },
     });
   }
+}
+
+// returns formatted date.
+// TODO: needs appropriate datetime format
+function toDate(timestamp) {
+  return new Date(timestamp.seconds * 1000);
 }
 </script>
 <template>
@@ -112,7 +166,7 @@ async function deleteAppointment() {
       <!-- sidebar -->
       <aside class="shrink-0 sm:col-start-8 sm:col-end-13">
         <section class="flex flex-col gap-4">
-          <!--when booked appointment is available-->
+          <!--when schedule is available-->
           <section
             v-if="!isMyAppointment"
             class="flex flex-col gap-4 rounded-2xl p-4 shadow-md shadow-zinc-400"
@@ -129,8 +183,9 @@ async function deleteAppointment() {
                 class="rounded-xl bg-white p-2.5 shadow-md shadow-stone-400 outline-orange-600 focus:border-orange-600"
               >
                 <option value="Option 1">Select Date</option>
-                <option value="Option 2">Oct 12, 2022 (Tue)</option>
-                <option value="Option 3">Oct 13, 2022 (Wed)</option>
+                <option v-for="schedule in schedules" :value="schedule.id">
+                  {{ toDate(schedule.timestart) }}
+                </option>
               </select>
             </article>
             <article class="flex flex-col">
@@ -255,6 +310,9 @@ async function deleteAppointment() {
                 link="appointmentform"
               /-->
               0 out of 27 schedules booked.
+              <p v-for="schedule in schedules" :value="schedule.id">
+                {{ toDate(schedule.timestart) }}
+              </p>
             </article>
             <footer class="flex flex-row-reverse gap-4">
               <ButtonPrimary text="Edit appointment" />

@@ -16,64 +16,17 @@ import {
 const props = defineProps({
   filter: {
     type: String,
-    default: "Appointment Title",
+    default: "", // all, booked, hosted
+  },
+  profileId: {
+    type: String,
   },
   limit: {
     default: 100,
   },
 });
 
-const appointmentList = ref([
-  /*
-  {
-    id: 0,
-    title: props.filter,
-    user: "@username",
-    description: "Some description",
-    datetime: "01/01/2001 12:00 AM (in 7 days)",
-    image_src: "/img/sample.jpg",
-  },
-  {
-    id: 1,
-    title: props.filter + " but it's long",
-    user: "@username",
-    description: "Some description",
-    datetime: "01/01/2001 12:00 AM (in 7 days)",
-    image_src: "/img/sample.jpg",
-  },
-  {
-    id: 2,
-    title: props.filter + " but it's unnecessarily verbose",
-    user: "@username",
-    description: "Some description",
-    datetime: "01/01/2001 12:00 AM (in 7 days)",
-    image_src: "/img/sample.jpg",
-  },
-  {
-    id: 3,
-    title: "Card Title",
-    user: "@username",
-    description: "Some description",
-    datetime: "01/01/2001 12:00 AM (in 7 days)",
-    image_src: "/img/sample.jpg",
-  },
-  {
-    id: 4,
-    title: "Card Title",
-    user: "@username",
-    description: "Some description",
-    datetime: "01/01/2001 12:00 AM (in 7 days)",
-    image_src: "/img/sample.jpg",
-  },
-  {
-    id: 5,
-    title: "Card Title",
-    user: "@username",
-    description: "Some description",
-    datetime: "01/01/2001 12:00 AM (in 7 days)",
-    image_src: "/img/sample.jpg",
-  },*/
-]);
+const appointmentList = ref([]);
 
 const appointmentsColRef = collection(appointmateDB, "appointments");
 const appointmentsColQuery = query(appointmentsColRef, orderBy("host_id"));
@@ -93,9 +46,30 @@ onMounted(async () => {
       };
       tempList.push(appointment);
     });
-    appointmentList.value = tempList;
+
+    switch (props.filter) {
+      case "hosted":
+        appointmentList.value = filterHosted(tempList, props.profileId);
+        break;
+
+      case "booked":
+        appointmentList.value = filterBooked(tempList, props.profileId);
+        break;
+
+      default:
+        appointmentList.value = tempList;
+        break;
+    }
   });
 });
+function filterHosted(arr, keyword) {
+  return arr.filter((el) => el.host_id == keyword);
+}
+
+//temp
+function filterBooked(arr, keyword) {
+  return arr.filter((el) => el.host_id != keyword);
+}
 </script>
 <template>
   <div class="flex flex-col items-stretch gap-4 px-1 pb-4">

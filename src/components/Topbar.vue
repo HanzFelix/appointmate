@@ -1,12 +1,26 @@
 <script setup>
 import { useRouter } from "vue-router";
-import { useUserStore } from "../stores/user";
-const userStore = useUserStore();
+import { useLocalStore } from "../stores/local";
+import { ref, onMounted } from "vue";
+
+const localStore = useLocalStore();
 const router = useRouter();
+const myProfileId = ref("id");
+const myUsername = ref("a");
+
 function logout() {
-  userStore.logout();
+  localStore.myUserId = "";
+  localStore.myProfileId = "a";
+  localStorage.removeItem("login-token");
+  localStorage.removeItem("user-profile");
+  localStore.loggedIn = false;
   router.push({ name: "login" });
 }
+
+onMounted(async () => {
+  myProfileId.value = localStore.myProfileId;
+  myUsername.value = localStore.myProfile.username;
+});
 </script>
 <template>
   <header class="top-0 z-10 bg-amber-400 py-4 shadow-md">
@@ -16,8 +30,7 @@ function logout() {
         <RouterLink to="/home">Home</RouterLink>
         <RouterLink
           :to="{
-            name: 'profile',
-            params: { username: userStore.myUserProfile.username },
+            name: 'myProfile',
           }"
           >Profile</RouterLink
         >

@@ -8,7 +8,7 @@ import AppointmentDetailsView from "../views/AppointmentDetailsView.vue";
 import LoginMiniView from "../views/LoginMiniView.vue";
 import RegisterMiniView from "../views/RegisterMiniView.vue";
 import { useUserStore } from "../stores/user";
-import { query } from "firebase/firestore";
+import { useLocalStore } from "../stores/local";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -39,7 +39,8 @@ const router = createRouter({
         {
           path: "/profile",
           name: "myProfile",
-          component: ProfileView /*
+          component: ProfileView,
+          props: true /*
           children: [
             {
               path: "hosted",
@@ -76,10 +77,10 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const userStore = useUserStore();
-  if (!to.meta.requiresAuth && userStore.isLoggedIn) {
+  const localStore = useLocalStore();
+  if (!to.meta.requiresAuth && localStore.loggedIn) {
     next({ name: "home" });
-  } else if (to.meta.requiresAuth && !userStore.isLoggedIn) {
+  } else if (to.meta.requiresAuth && !localStore.loggedIn) {
     next({ name: "login" });
   } else {
     next();

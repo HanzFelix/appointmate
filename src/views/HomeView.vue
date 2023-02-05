@@ -1,9 +1,16 @@
 <script setup>
 import QuickLinkItem from "../components/QuickLinkItem.vue";
 import AppointmentCardList from "../components/AppointmentCardList.vue";
-import { useUserStore } from "../stores/user";
+import { useLocalStore } from "../stores/local";
+import { ref, onMounted } from "vue";
 
-const userStore = useUserStore();
+const localStore = useLocalStore();
+
+const username = ref("user");
+
+onMounted(async () => {
+  username.value = localStore.myProfile.username;
+});
 </script>
 <template>
   <!-- Home -->
@@ -19,9 +26,7 @@ const userStore = useUserStore();
     </main>
     <aside class="shrink-0 sm:col-start-8 sm:col-end-13">
       <section class="flex flex-col gap-2">
-        <header class="text-2xl">
-          Hello {{ userStore.myUserProfile.username }},
-        </header>
+        <header class="text-2xl">Hello {{ username }},</header>
         <QuickLinkItem title="See upcoming appointments" link="profile" />
         <QuickLinkItem title="See available appointments" link="profile" />
       </section>
