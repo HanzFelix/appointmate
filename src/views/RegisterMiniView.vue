@@ -1,5 +1,6 @@
 <script setup>
 import ButtonPrimary from "../components/ButtonPrimary.vue";
+//TODO: Implement register in firebase
 </script>
 <template>
   <div class="flex flex-col gap-6">

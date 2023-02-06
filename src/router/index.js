@@ -7,7 +7,6 @@ import AppointmentFormView from "../views/AppointmentFormView.vue";
 import AppointmentDetailsView from "../views/AppointmentDetailsView.vue";
 import LoginMiniView from "../views/LoginMiniView.vue";
 import RegisterMiniView from "../views/RegisterMiniView.vue";
-import { useUserStore } from "../stores/user";
 import { useLocalStore } from "../stores/local";
 
 const router = createRouter({
@@ -41,6 +40,7 @@ const router = createRouter({
           name: "myProfile",
           component: ProfileView,
           props: true /*
+          // undecided on how to make this work
           children: [
             {
               path: "hosted",

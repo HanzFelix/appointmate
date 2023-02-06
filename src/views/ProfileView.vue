@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, onUpdated, onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import AppointmentCardList from "../components/AppointmentCardList.vue";
 import QuickLinkItem from "../components/QuickLinkItem.vue";
 import { useLocalStore } from "../stores/local";
@@ -27,6 +27,7 @@ const props = defineProps({
 });
 
 const localStore = useLocalStore();
+
 const activeTab = ref(props.activeTab); // todo: move inside onMounted()
 const loadedProfileRef = ref({
   id: "",
@@ -73,17 +74,20 @@ onMounted(async () => {
   localStore.loadedProfileId = profiles[0].id;
 });
 
+// switch between hosted and booked appointment
 function setActiveTab(val) {
   activeTab.value = val;
 }
+
+// TODO: use RouterView for AppointmentCardList instead?
 </script>
 <template>
   <!-- Profile -->
   <main
-    class="justify-stretch justify-stretch container mx-auto box-border flex h-full flex-col-reverse gap-10 overflow-hidden overflow-y-auto bg-zinc-100 px-10 pb-10 sm:grid sm:grid-cols-12 sm:pt-10"
+    class="justify-stretch container mx-auto box-border flex h-full flex-col-reverse gap-10 overflow-hidden overflow-y-auto bg-zinc-100 px-10 pb-10 sm:grid sm:grid-cols-12 sm:pt-10"
   >
     <main
-      class="rounded-t-xl pb-1 sm:col-start-1 sm:col-end-8 sm:overflow-y-auto"
+      class="basis-full rounded-t-xl pb-1 sm:col-start-1 sm:col-end-8 sm:overflow-y-auto"
     >
       <nav
         class="sticky top-0 mb-2 border-b border-transparent bg-white text-center text-sm font-medium text-stone-700 shadow-md shadow-zinc-400"

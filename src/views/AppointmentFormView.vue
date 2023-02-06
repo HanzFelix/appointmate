@@ -1,14 +1,30 @@
 <script setup>
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import ButtonPrimary from "../components/ButtonPrimary.vue";
 import ButtonAlternative from "../components/ButtonAlternative.vue";
-import { useUserStore } from "../stores/user";
-import { useAppointmentStore } from "../stores/appointment";
 import { useRouter } from "vue-router";
-const appointmentStore = useAppointmentStore();
-const userStore = useUserStore();
+import { appointmateDB } from "../firebase";
+import {
+  Timestamp,
+  collection,
+  onSnapshot,
+  addDoc,
+  doc,
+  deleteDoc,
+  updateDoc,
+  query,
+  orderBy,
+  getDoc,
+} from "firebase/firestore";
+import { useLocalStore } from "../stores/local";
+
+// firebase
+const appointmentsRef = collection(appointmateDB, "appointments");
+const schedulesRef = collection(appointmateDB, "schedules");
+const localStore = useLocalStore();
 const router = useRouter();
 
+// default form values
 const appointmentTitle = ref("");
 const appointmentDesc = ref("");
 const appointmentImg = ref("/img/sample.jpg");
@@ -23,33 +39,63 @@ const schedules = ref([
   { date: "", times: [] },
 ]);
 
+// add appointment and schedules to firestore
 async function onSubmit() {
+  // convert to object
   const appointment = {
     title: appointmentTitle.value,
     description: appointmentDesc.value,
     image_path: appointmentImg.value,
-    host_id: userStore.myUserProfile.id,
+    host_id: localStore.myProfile.id,
   };
-  if (await appointmentStore.addAppointment(appointment, schedules.value)) {
-    router.push({
-      name: "appointmentdetails",
-      params: { id: appointmentStore.openedAppointmentid },
-    });
+
+  // add appointment to firestore
+  const docRef = await addDoc(appointmentsRef, appointment);
+  localStore.loadedAppointmentId = docRef.id;
+
+  // parse schedules from inputs
+  console.log(schedules.value);
+  const scheduleList = [];
+  for (let s_index in schedules.value) {
+    const schedule = schedules.value[s_index];
+    if (schedule.date == "") continue;
+    for (let t_index in schedule.times) {
+      const time = schedule.times[t_index];
+      if (time.starttime == "") continue;
+      if (time.endtime == "") continue;
+
+      scheduleList.push({
+        appointee_id: "",
+        appointment_id: docRef.id,
+        timestart: stringToTimeStamp(schedule.date, time.starttime),
+        timeend: stringToTimeStamp(schedule.date, time.endtime),
+      });
+    }
   }
+  for (let i in scheduleList) {
+    await addDoc(schedulesRef, scheduleList[i]);
+  }
+
+  router.push({
+    name: "appointmentdetails",
+    params: { id: localStore.loadedAppointmentId },
+  });
 }
 
+// convert input date and time to Date()
+function stringToTimeStamp(day, time) {
+  const [y, m, d] = day.split("-");
+  const [hh, mm] = time.split(":");
+
+  return Timestamp.fromDate(new Date(+y, m - 1, +d, hh, mm));
+}
+
+// checks whether the input is not equivalent to an empty string
 function hasValue(input) {
   return input != "";
 }
-/*
-function times() {
-  let starttime = "00:00:00";
-  let endtime = "23:00:00";
-  let x = 60;
-  let startdate = new Date(Date.now().toLocaleDateString() + " " + starttime);
-}*/
 
-function getDates() {
+/*function getDates() {
   let dates = [];
   let starttime = "00:00:00";
   let startdate = new Date().toLocaleDateString();
@@ -64,23 +110,39 @@ function getTimes() {
   let times = [];
   let endtime = "23:00:00";
   let x = 60 * 60 * 1000;
-}
+}*/
 
+// append an empty date for user to expand their schedule
 function addDate(schedule) {
   schedule.times.push({ starttime: "", endtime: "" });
   schedules.value.push({ date: "", times: [] });
 }
 
+// append an empty time period for user to expand their schedule
 function addTime(times) {
   times.push({ starttime: "", endtime: "" });
 }
 
+// remove a section of date/time from the list of schedules
 function removeSchedule(list, index) {
   list.splice(index, 1);
 }
 
+// allow the user to reuse a set of time periods for other dates.
 function duplicateSchedule(schedule) {
-  schedules.value.splice(schedules.value.length - 1, 0, schedule);
+  const times = [];
+  for (let i = 0; i < schedule.times.length; i++) {
+    times.push({
+      starttime: schedule.times[i].starttime,
+      endtime: schedule.times[i].endtime,
+    });
+  }
+  const duplicatedSchedule = {
+    date: "",
+    times: times,
+  };
+
+  schedules.value.splice(schedules.value.length - 1, 0, duplicatedSchedule);
 }
 </script>
 <template>
@@ -204,7 +266,9 @@ function duplicateSchedule(schedule) {
                   class="box-border basis-5/12 rounded-xl bg-white p-2.5 shadow-md shadow-stone-400 outline-orange-600 focus:border-orange-600 disabled:text-zinc-400"
                 />
                 <input
-                  :disabled="!hasValue(time.starttime)"
+                  :disabled="
+                    !hasValue(schedule.date) || !hasValue(time.starttime)
+                  "
                   type="time"
                   v-model="time.endtime"
                   class="box-border basis-5/12 rounded-xl bg-white p-2.5 shadow-md shadow-stone-400 outline-orange-600 focus:border-orange-600 disabled:text-zinc-400"

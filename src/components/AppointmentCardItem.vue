@@ -12,6 +12,8 @@ const username = ref("[][][][][][][][][]");
 const userStore = useUserStore();
 
 onMounted(async () => {
+  // TODO: Remove userStore
+  // TODO: get username from appointmentObject instead
   username.value = (
     await userStore.loadProfileFromProfileId(props.appointment.host_id)
   ).username;
@@ -20,6 +22,9 @@ onMounted(async () => {
 function toDate(timestamp) {
   return new Date(timestamp.seconds * 1000);
 }
+// TODO: Display appointment datetime based on user's connection with appointment
+// note: includes "3 available schedules out of 27", "booked for 12/12/2021 (7:00 PM - 9:00PM)", "No available schedules out of 27",
+//       "next appointment: @uninvited_guest - 12/12/2021 (7:00 PM - 9:00 PM)"
 </script>
 
 <template>

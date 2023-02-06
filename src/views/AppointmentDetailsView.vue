@@ -2,8 +2,7 @@
 import ButtonPrimary from "../components/ButtonPrimary.vue";
 import ButtonAlternative from "../components/ButtonAlternative.vue";
 import ConfirmationModal from "../components/ConfirmationModal.vue";
-import { ref, onMounted } from "vue";
-import { useAppointmentStore } from "../stores/appointment";
+import { ref, onMounted, computed } from "vue";
 import { appointmateDB } from "../firebase";
 import { useRouter } from "vue-router";
 import {
@@ -16,15 +15,29 @@ import {
 } from "firebase/firestore";
 import { useLocalStore } from "../stores/local";
 
+// init packages
 const router = useRouter();
 const localStore = useLocalStore();
-const appointmentStore = useAppointmentStore();
-const schedulesRef = collection(appointmateDB, "schedules");
-const showModal = ref(false);
-const loadedAppointmentRef = ref(appointmentStore.tempAppointment);
-const loadedProfileRef = ref(localStore.myProfile);
 
+// firebase
+const schedulesRef = collection(appointmateDB, "schedules");
+const appointmentsRef = collection(appointmateDB, "appointments");
+
+// default view values
+// TODO: Fix view showing placeholder content on mount.
+const showModal = ref(false);
 const schedules = ref([]);
+const selectedDate = ref("");
+const selectedTimePeriod = ref("");
+const loadedProfileRef = ref(localStore.myProfile);
+const loadedAppointmentRef = ref({
+  id: 0,
+  title: "Loading...",
+  description:
+    "No appointment loaded. Please wait a moment, or refresh the page instead",
+  image_path: "/img/sample.jpg",
+  host_id: "fbNsQCvXAaqGYkqRtvw4",
+});
 
 // states include: booked, available, host, unavailable
 const stateRef = ref("");
@@ -43,6 +56,8 @@ const props = defineProps({
 });
 
 onMounted(async () => {
+  selectedDate.value = "None";
+  selectedTimePeriod.value = "None";
   localStore.loadedAppointmentId = props.id;
 
   // get appointment
@@ -90,15 +105,17 @@ onMounted(async () => {
   schedules.value = schedulesTemp;
 });
 
-// delete dialog
+// show delete dialog (?)
 function showConfirmationDialog(bool) {
   showModal.value = bool;
 }
 
 // actions to appointment
+// TODO: Fix schedules not included on delete.
 async function deleteAppointment() {
   showConfirmationDialog(false);
-  if (await appointmentStore.deleteAppointment(props.id)) {
+
+  if (await deleteDoc(doc(appointmentsRef, appointment_id))) {
     router.push({
       name: "profile",
       params: { username: localStore.myProfile.username },
@@ -106,11 +123,61 @@ async function deleteAppointment() {
   }
 }
 
-// returns formatted date.
-// TODO: needs appropriate datetime format
-function toDate(timestamp) {
-  return new Date(timestamp.seconds * 1000);
+// convert firebase timestamp to readable date
+// TODO: need dev's preferred datetime format
+function scheduleToDate(timestamp) {
+  return timestamp.toDate().toLocaleDateString();
 }
+
+// convert firebase timestamp to readable time
+function scheduleToTime(timestamp) {
+  return timestamp.toDate().toLocaleString("en-US", {
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
+  });
+}
+
+// get dates while avoiding duplicates
+// TODO: fix dates sometimes not displaying properly
+function getDates() {
+  const x = schedules.value.filter((schedule) => {
+    let unique = true;
+    const set = new Set();
+    console.log(schedule);
+    set.add(schedule.timestart);
+    schedules.value.forEach((item) => {
+      if (
+        scheduleToDate(item.timestart) == scheduleToDate(schedule.timestart) &&
+        item != schedule
+      ) {
+        unique = false;
+      }
+    });
+    return unique;
+  });
+  return x;
+  /*
+  const list = [];
+  for (let i in schedules.value) {
+    list.push(schedules.value[i].timestart);
+  }
+  return [...new Set(list)];
+  */
+}
+
+// get time periods based on selected date
+function getTimePeriods() {
+  if (selectedDate.value != "None") {
+    return schedules.value.filter(
+      (schedule) =>
+        scheduleToDate(schedule.timestart) == scheduleToDate(selectedDate.value)
+    );
+  }
+  return [];
+}
+
+// TODO: Add capability to editing appointment schedule, etc.
 </script>
 <template>
   <!-- Create/Edit Appointment -->
@@ -145,7 +212,7 @@ function toDate(timestamp) {
             <span>27 available</span>
             <span
               class="material-symbols-outlined cursor-pointer text-amber-400"
-              @click="deleteAppointment()"
+              @click="showConfirmationDialog(true)"
               >bookmark</span
             >
           </section>
@@ -179,12 +246,16 @@ function toDate(timestamp) {
                 >DATE</label
               >
               <select
+                v-model="selectedDate"
                 id="standard-select"
                 class="rounded-xl bg-white p-2.5 shadow-md shadow-stone-400 outline-orange-600 focus:border-orange-600"
               >
-                <option value="Option 1">Select Date</option>
-                <option v-for="schedule in schedules" :value="schedule.id">
-                  {{ toDate(schedule.timestart) }}
+                <option value="None">Select Date</option>
+                <option
+                  v-for="schedule in getDates()"
+                  :value="schedule.timestart"
+                >
+                  {{ scheduleToDate(schedule.timestart) }}
                 </option>
               </select>
             </article>
@@ -195,13 +266,22 @@ function toDate(timestamp) {
                 >TIME</label
               >
               <select
+                :disabled="selectedDate == 'None'"
+                v-model="selectedTimePeriod"
                 id="standard-select"
                 class="rounded-xl bg-white p-2.5 shadow-md shadow-stone-400 outline-orange-600 focus:border-orange-600"
               >
-                <option value="Option 1">Select Time Period</option>
-                <option value="Option 2">9:00 AM - 10:00 AM</option>
-                <option value="Option 3">10:00 AM - 11:00 AM</option>
-                <option value="Option 3">11:00 AM - 12:00 PM</option>
+                <option value="None">Select Time Period</option>
+                <option
+                  v-for="schedule in getTimePeriods()"
+                  :value="schedule.id"
+                >
+                  {{
+                    scheduleToTime(schedule.timestart) +
+                    " - " +
+                    scheduleToTime(schedule.timeend)
+                  }}
+                </option>
               </select>
             </article>
             <footer class="flex flex-row-reverse gap-4">
@@ -224,6 +304,7 @@ function toDate(timestamp) {
                 disabled
                 id="standard-select"
                 class="rounded-xl bg-white p-2.5 shadow-md shadow-stone-400 outline-orange-600 focus:border-orange-600"
+                v
               >
                 <option value="Option 1">Select Date</option>
                 <option value="Option 2" selected>Oct 12, 2022 (Tue)</option>
@@ -305,13 +386,16 @@ function toDate(timestamp) {
           >
             <header class="text-2xl">Booked appointments</header>
             <article class="flex flex-col">
-              <!--QuickLinkItem
-                title="Host an appointment"
-                link="appointmentform"
-              /-->
-              0 out of 27 schedules booked.
+              0 out of x schedules booked.
               <p v-for="schedule in schedules" :value="schedule.id">
-                {{ toDate(schedule.timestart) }}
+                {{
+                  scheduleToDate(schedule.timestart) +
+                  " (" +
+                  scheduleToTime(schedule.timestart) +
+                  " - " +
+                  scheduleToTime(schedule.timeend) +
+                  ")"
+                }}
               </p>
             </article>
             <footer class="flex flex-row-reverse gap-4">

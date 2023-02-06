@@ -1,3 +1,4 @@
+// Obsolete store, refer to local.js instead
 import { ref } from "vue";
 import { defineStore } from "pinia";
 import { appointmateDB } from "../firebase";

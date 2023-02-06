@@ -5,7 +5,6 @@ import { useLocalStore } from "../stores/local";
 import { ref, onMounted } from "vue";
 
 const localStore = useLocalStore();
-
 const username = ref("user");
 
 onMounted(async () => {

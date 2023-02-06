@@ -1,4 +1,5 @@
 <script setup>
+//TODO: Implement fireAuth
 import ButtonPrimary from "../components/ButtonPrimary.vue";
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
@@ -13,11 +14,13 @@ import {
   doc,
 } from "firebase/firestore";
 
+// init packages
 const localStore = useLocalStore();
 const router = useRouter();
 const userRef = collection(appointmateDB, "users");
 const profilesRef = collection(appointmateDB, "profiles");
 
+// default values
 const email = ref("example1@mail.com");
 const password = ref("example");
 
