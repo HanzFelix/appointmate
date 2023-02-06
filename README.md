@@ -1,6 +1,6 @@
 # appointmate
 
-Final project for CSci 153 - Web Systems & Technology. May or may not continue to be developed after the end of the course. 
+Capstone project for CSci 153 - Web Systems & Technology. Details of the project to be provided once the core features have been implemented and deployed.
 
 ## Recommended IDE Setup
 
