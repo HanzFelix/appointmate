@@ -5,7 +5,7 @@ import TopBar from "../components/Topbar.vue";
 <template>
   <div
     class="flex h-screen flex-col items-stretch bg-cover"
-    style="background-image: url('/img/login_bg.jpg')"
+    style="background-image: url('./img/login_bg.jpg')"
   >
     <TopBar />
     <RouterView :key="$route.fullPath" />
