@@ -15,7 +15,7 @@ const userRef = collection(appointmateDB, "users");
 const profilesRef = collection(appointmateDB, "profiles");
 const emptyProfile = {
   id: "not_logged_in",
-  avatar: "/img/avatar_tree.png",
+  avatar: "./img/avatar_tree.png",
   username: "not_logged_in",
 };
 

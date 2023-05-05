@@ -24,7 +24,7 @@ export const useAppointmentStore = defineStore("appointments", {
         id: 0,
         title: "Appointment title",
         description: "Appointment description",
-        image: "/img/sample.jpg",
+        image: "./img/sample.jpg",
         host_id: "abcde1ff",
       },
     ],

@@ -3,7 +3,7 @@
   <!-- Login -->
   <div
     class="fixed flex h-screen w-screen items-center bg-cover"
-    style="background-image: url('/img/login_bg.jpg')"
+    style="background-image: url('./img/login_bg.jpg')"
   >
     <div
       class="z-20 hidden w-full bg-[#4f4f4f] opacity-60 mix-blend-multiply lg:block"

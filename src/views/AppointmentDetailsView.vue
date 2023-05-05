@@ -35,7 +35,7 @@ const loadedAppointmentRef = ref({
   title: "Loading...",
   description:
     "No appointment loaded. Please wait a moment, or refresh the page instead",
-  image_path: "/img/sample.jpg",
+  image_path: "./img/sample.jpg",
   host_id: "fbNsQCvXAaqGYkqRtvw4",
 });
 

@@ -27,7 +27,7 @@ const router = useRouter();
 // default form values
 const appointmentTitle = ref("");
 const appointmentDesc = ref("");
-const appointmentImg = ref("/img/sample.jpg");
+const appointmentImg = ref("./img/sample.jpg");
 const schedules = ref([
   {
     date: "2023-02-03",
